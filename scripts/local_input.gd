@@ -1,41 +1,52 @@
 extends RefCounted
+const Settings = preload("res://scripts/game_settings.gd")
+var settings: RefCounted
 var previous_pad: Array = [{}, {}]
-const KEYS = [[KEY_A, KEY_D, KEY_W, KEY_S, KEY_Q, KEY_F, KEY_G, KEY_H],
-	[KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_K, KEY_U, KEY_I, KEY_O]]
+var blocked: Array = [true, true]
+var device_slots: Array = []
 const COMMANDS = ["jump", "sprint", "dodge", "attack0", "attack1", "attack2"]
 
-func _init():
-	for player in range(2):
-		for i in range(8):
-			var action: String = "p%d_%d" % [player, i]
-			if not InputMap.has_action(action):
-				InputMap.add_action(action)
-				var event := InputEventKey.new()
-				event.physical_keycode = KEYS[player][i]
-				InputMap.action_add_event(action, event)
+func _init(preferences: RefCounted):
+	settings = preferences
+
+func block_until_release() -> void:
+	blocked = [true, true]
+	previous_pad = [{}, {}]
+
+func set_devices(slots: Array) -> void:
+	device_slots = slots.duplicate()
+	block_until_release()
 
 func sample(player: int) -> Dictionary:
 	var prefix: String = "p%d_" % player
 	var axis: int = int(Input.is_action_pressed(prefix + "1")) - int(Input.is_action_pressed(prefix + "0"))
 	var pressed: Dictionary = {}
+	var any_held: bool = axis != 0
+	for i in range(8):
+		any_held = any_held or Input.is_action_pressed(prefix + str(i))
 	for i in range(6):
 		pressed[COMMANDS[i]] = Input.is_action_just_pressed(prefix + str(i + 2))
 	var pads: Array = Input.get_connected_joypads()
-	if pads.size() > player:
-		var device: int = pads[player]
+	var device: int = device_slots[player] if device_slots.size() == 2 else (pads[player] if pads.size() > player else -1)
+	if device in pads:
 		var stick: float = Input.get_joy_axis(device, JOY_AXIS_LEFT_X)
 		var pad_axis: int = int(Input.is_joy_button_pressed(device, JOY_BUTTON_DPAD_RIGHT)) - int(Input.is_joy_button_pressed(device, JOY_BUTTON_DPAD_LEFT))
 		if absf(stick) > 0.35:
 			pad_axis = 1 if stick > 0 else -1
 		if pad_axis != 0:
 			axis = pad_axis
-		var buttons: Array = [JOY_BUTTON_A, JOY_BUTTON_RIGHT_SHOULDER, JOY_BUTTON_LEFT_SHOULDER, JOY_BUTTON_X, JOY_BUTTON_Y, JOY_BUTTON_B]
+		var buttons: Array = settings.values.pads[player]
 		for i in range(6):
 			var held: bool = Input.is_joy_button_pressed(device, buttons[i])
+			any_held = any_held or held
 			pressed[COMMANDS[i]] = pressed[COMMANDS[i]] or (held and not previous_pad[player].get(COMMANDS[i], false))
 			previous_pad[player][COMMANDS[i]] = held
 	else:
 		previous_pad[player].clear()
+	if blocked[player]:
+		if not any_held and axis == 0:
+			blocked[player] = false
+		return {"axis": 0, "action": ""}
 	# Explicit tie-break for simultaneous commands. No repeated held attacks.
 	for command in ["attack0", "attack1", "attack2", "dodge", "sprint", "jump"]:
 		if pressed[command]:

@@ -2,11 +2,28 @@ extends Node2D
 const Simulation = preload("res://scripts/combat_sim.gd")
 const LocalInput = preload("res://scripts/local_input.gd")
 const FighterView = preload("res://scenes/fighter_view.tscn")
+const Settings = preload("res://scripts/game_settings.gd")
+const SettingsMenu = preload("res://scripts/settings_menu.gd")
+const PauseMenu = preload("res://scripts/pause_menu.gd")
+const FrontEnd = preload("res://scripts/front_end.gd")
+const CharacterCatalog = preload("res://scripts/character_catalog.gd")
+const Courtyard = preload("res://scripts/courtyard.gd")
+const CombatAudio = preload("res://scripts/combat_audio.gd")
+var combat_audio: Node2D
+var arena: Node2D
+var arena_button: Button
+var play_intro_on_start: bool = true
+var selected_characters: Array = ["tsukiyo", "tsukiyo"]
 var sim = Simulation.new()
-var controls = LocalInput.new()
+var settings = Settings.new()
+var controls = LocalInput.new(settings)
+var options: Control
+var pause_menu: PanelContainer
+var resume_button: Button
+var options_button: Button
+var pause_options_button: Button
 var views: Array = []
-var menu: PanelContainer
-var menu_title: Label
+var menu: Control
 var start_button: Button
 var format_button: Button
 var best_of: int = 3
@@ -17,13 +34,26 @@ var frame_step: bool = false
 var font: Font = ThemeDB.fallback_font
 var capture_frames: int = 0
 var practice: bool = false
+var demo: bool = false
+var demo_tick: int = 0
+const DEMO_STAGES = ["Guardia", "Avance", "Retroceso", "Estocada", "Corte ascendente", "Corte bajo", "Aguja aérea", "Corte aéreo", "Descendente", "Sprint y esquiva", "Derrota"]
 
 func _ready() -> void:
+	settings.load_settings()
+	settings.apply_all()
+	arena = Courtyard.new()
+	add_child(arena)
+	combat_audio = CombatAudio.new()
+	add_child(combat_audio)
 	for i in range(2):
 		var view = FighterView.instantiate()
 		add_child(view)
 		views.append(view)
 	build_menu()
+	if play_intro_on_start and not "--demo" in OS.get_cmdline_user_args() and not "--capture" in OS.get_cmdline_user_args():
+		menu.play_prologue()
+	if "--demo" in OS.get_cmdline_user_args():
+		start_demo()
 	if "--capture" in OS.get_cmdline_user_args():
 		start_game()
 		sim.phase = "fight"
@@ -33,80 +63,165 @@ func _ready() -> void:
 func build_menu() -> void:
 	var layer := CanvasLayer.new()
 	add_child(layer)
-	menu = PanelContainer.new()
-	menu.position = Vector2(480, 185)
-	menu.size = Vector2(640, 520)
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("101011")
-	style.border_color = Color("555550")
-	style.set_border_width_all(1)
-	style.content_margin_left = 42
-	style.content_margin_right = 42
-	style.content_margin_top = 34
-	style.content_margin_bottom = 34
-	menu.add_theme_stylebox_override("panel", style)
+	menu = FrontEnd.new()
 	layer.add_child(menu)
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 20)
-	menu.add_child(box)
-	menu_title = Label.new()
-	menu_title.text = "El primer duelo"
-	menu_title.add_theme_font_size_override("font_size", 36)
-	box.add_child(menu_title)
-	var description := Label.new()
-	description.text = "Dos personas. Una distancia. Un solo golpe.\n\nPrototipo local con figuras provisionales.\nAmbos jugadores comparten las mismas técnicas."
-	description.add_theme_font_size_override("font_size", 20)
-	box.add_child(description)
-	format_button = make_button("Partida · Mejor de 3", box)
-	format_button.pressed.connect(func():
-		best_of = 5 if best_of == 3 else 3
-		format_button.text = "Partida · Mejor de %d" % best_of)
-	start_button = make_button("Entrar al dojo", box)
-	start_button.pressed.connect(start_game)
-	var practice_button := make_button("Práctica libre · sin marcador", box)
-	practice_button.pressed.connect(func():
-		start_game()
-		practice = true)
-	var coffee := LinkButton.new()
-	coffee.text = "Un café para Jorge ↗"
-	coffee.uri = "https://jorge-coffee.onrender.com/"
-	coffee.add_theme_font_size_override("font_size", 16)
-	box.add_child(coffee)
-	start_button.grab_focus()
+	menu.setup(self)
+	start_button = menu.home_buttons[0]
+	options_button = menu.home_buttons[3]
+	format_button = menu.format_button
+	pause_menu = PauseMenu.new()
+	layer.add_child(pause_menu)
+	pause_menu.setup(self)
+	resume_button = pause_menu.resume_button
+	pause_options_button = pause_menu.options_button
+	arena_button = pause_menu.arena_button
+	options = SettingsMenu.new()
+	layer.add_child(options)
+	options.setup(settings)
+	options.closed.connect(func():
+		controls.block_until_release()
+		if playing:
+			pause_menu.show()
+			pause_options_button.grab_focus()
+		else:
+			menu.suspended = false
+			menu.show()
+			if menu.screen == "home":
+				options_button.grab_focus()
+		refresh())
 
-func make_button(caption: String, parent: Node) -> Button:
-	var button := Button.new()
-	button.text = caption
-	button.custom_minimum_size.y = 46
-	button.add_theme_font_size_override("font_size", 21)
-	parent.add_child(button)
-	return button
+func open_options() -> void:
+	if playing:
+		paused = true
+	frame_step = false
+	menu.suspended = true
+	menu.hide()
+	pause_menu.hide()
+	options.open()
+	options.device_slots = menu.device_slots.duplicate()
+
+func open_pause() -> void:
+	paused = true
+	frame_step = false
+	if options.visible:
+		return
+	pause_menu.show()
+	resume_button.grab_focus()
+
+func resume_game() -> void:
+	pause_menu.hide()
+	paused = false
+	frame_step = false
+	controls.block_until_release()
+	release_gui_focus()
+
+func return_to_menu() -> void:
+	frame_step = false
+	menu.show_home()
+
+func return_to_selection() -> void:
+	frame_step = false
+	menu.open_selection("practice" if practice else "duel")
+
+func toggle_arena() -> void:
+	arena.laboratory = not arena.laboratory
+	arena_button.text = "Escenario: Laboratorio" if arena.laboratory else "Escenario: Patio al atardecer"
+	refresh()
+
+func release_gui_focus() -> void:
+	var focused := get_viewport().gui_get_focus_owner()
+	if focused != null:
+		focused.release_focus()
 
 func start_game() -> void:
+	menu.prologue.stop()
+	controls.set_devices(menu.device_slots)
+	for i in range(views.size()):
+		views[i].set_character(selected_characters[i])
+		sim.set_character(i, selected_characters[i])
 	sim.reset_match(best_of)
+	combat_audio.reset()
 	playing = true
 	paused = false
 	practice = false
+	demo = false
+	frame_step = false
+	controls.block_until_release()
 	menu.hide()
+	pause_menu.hide()
+	release_gui_focus()
 	refresh()
 
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and playing and capture_frames == 0:
-		paused = true
+func select_character(player: int, id: String) -> void:
+	for entry in CharacterCatalog.available():
+		if entry.id == id:
+			selected_characters[player] = id
+			views[player].set_character(id)
+			sim.set_character(player, id)
+			refresh()
+			return
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func start_demo() -> void:
+	start_game()
+	demo = true
+	practice = true
+	demo_tick = 0
+	sim.phase = "fight"
+
+func demo_inputs() -> Array:
+	var stage: int = int(demo_tick / 120.0) % DEMO_STAGES.size()
+	var age: int = demo_tick % 120
+	if age == 0:
+		sim.reset_round()
+		sim.phase = "fight"
+		if stage == 10:
+			sim.fighters[0].state = "dead"
+			sim.phase = "round_over"
+	var input := {"axis": 0, "action": ""}
+	if stage in [1, 2] and age >= 15 and age < 70:
+		input.axis = 1 if stage == 1 else -1
+	elif stage in [3, 4, 5] and age == 15:
+		input.action = "attack%d" % (stage - 3)
+	elif stage in [6, 7, 8]:
+		if age == 10:
+			input.action = "jump"
+		elif age == 22:
+			input.action = "attack%d" % (stage - 6)
+	elif stage == 9:
+		if age == 10:
+			input.action = "sprint"
+		elif age == 55:
+			input.action = "dodge"
+	demo_tick += 1
+	return [input, {}]
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and playing and not menu.visible and capture_frames == 0:
+		open_pause()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if options.visible:
+		return
 	if not event.is_pressed() or event.is_echo():
 		return
+	if event is InputEventJoypadButton:
+		if event.button_index == JOY_BUTTON_START and playing:
+			resume_game() if pause_menu.visible else open_pause()
+			get_viewport().set_input_as_handled()
+		return
+	if not event is InputEventKey:
+		return
 	if event.keycode == KEY_ESCAPE:
-		playing = false
-		menu.show()
-		start_button.grab_focus()
-	elif playing:
+		if playing:
+			resume_game() if pause_menu.visible else open_pause()
+		get_viewport().set_input_as_handled()
+	elif playing and not pause_menu.visible:
 		match event.keycode:
 			KEY_F1:
 				debug_boxes = not debug_boxes
 			KEY_SPACE:
 				paused = not paused
+				controls.block_until_release()
 			KEY_F2:
 				paused = true
 				frame_step = true
@@ -119,14 +234,20 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _physics_process(_delta: float) -> void:
 	var inputs: Array = [controls.sample(0), controls.sample(1)]
-	if playing and (not paused or frame_step):
+	if playing and not menu.visible and not options.visible and not pause_menu.visible and (not paused or frame_step):
+		if demo:
+			inputs = demo_inputs()
 		if practice:
 			sim.scores = [0, 0]
+		combat_audio.before_step(sim)
 		sim.step(inputs)
+		combat_audio.after_step(sim)
 		frame_step = false
 		for event in sim.events:
 			if event.kind == "resolution":
 				log_resolution(event.detail)
+		if sim.phase == "match_over" and not demo and not practice:
+			menu.show_result()
 	refresh()
 	if capture_frames > 0:
 		capture_frames -= 1
@@ -146,7 +267,10 @@ func log_resolution(detail: Dictionary) -> void:
 		file.store_line(JSON.stringify(detail))
 
 func refresh() -> void:
+	arena.present(sim, playing and not menu.visible, not paused and not options.visible and not pause_menu.visible)
+	combat_audio.present(playing and not menu.visible and not options.visible, not paused and not options.visible and not pause_menu.visible)
 	for i in range(views.size()):
+		views[i].visible = playing
 		views[i].present(sim, i, debug_boxes)
 	queue_redraw()
 
@@ -158,6 +282,61 @@ func centered(y: float, caption: String, size: int = 20, color: Color = Color("d
 	label_at(Vector2((1600 - width) * 0.5, y), caption, size, color)
 
 func _draw() -> void:
+	if not playing:
+		return
+	if arena != null and not arena.laboratory:
+		draw_courtyard_hud()
+	else:
+		draw_laboratory()
+
+func draw_courtyard_hud() -> void:
+	var ink := Color("282c27")
+	var muted := Color("666453")
+	var accent := Color("8a4032")
+	draw_rect(Rect2(64, 32, 1472, 108), Color(0.94, 0.91, 0.82, 0.86))
+	draw_line(Vector2(64, 140), Vector2(1536, 140), Color(0.27, 0.26, 0.21, 0.35), 1)
+	for i in range(2):
+		var x: float = 90 if i == 0 else 1260
+		label_at(Vector2(x, 62), "JUGADOR %d" % (i + 1), 14, accent)
+		draw_string(menu.serif, Vector2(x, 104), CharacterCatalog.display_name(selected_characters[i]), HORIZONTAL_ALIGNMENT_LEFT, -1, 32, ink)
+		for round_index in range(sim.target_wins):
+			var point := Vector2(405 + round_index * 25 if i == 0 else 1195 - round_index * 25, 86)
+			draw_arc(point, 5, 0, TAU, 24, accent, 1, true)
+			if round_index < sim.scores[i]:
+				draw_circle(point, 4, accent)
+	centered(69, "M A A I", 27, ink)
+	centered(99, "PATIO AL ATARDECER", 14, muted)
+	var mode_text: String = "PRÁCTICA LIBRE" if practice else "AL MEJOR DE %d" % best_of
+	if demo:
+		mode_text = "GALERÍA · " + DEMO_STAGES[int(maxi(0, demo_tick - 1) / 120.0) % DEMO_STAGES.size()]
+	centered(173, mode_text, 15, ink)
+	var message: String = ""
+	if paused and not pause_menu.visible and not options.visible:
+		message = "Pausa · Espacio para continuar"
+	elif sim.phase == "countdown":
+		message = "Mide la distancia"
+	elif sim.phase == "round_over":
+		message = sim.result
+	if not message.is_empty():
+		var width: float = font.get_string_size(message, HORIZONTAL_ALIGNMENT_LEFT, -1, 27).x + 64
+		draw_rect(Rect2((1600 - width) * 0.5, 207, width, 62), Color(0.94, 0.91, 0.82, 0.9))
+		centered(249, message, 27, ink)
+	if debug_boxes:
+		draw_rect(Rect2(64, 284, 780, 115), Color(0.94, 0.91, 0.82, 0.94))
+		for i in range(2):
+			var f: Dictionary = sim.fighters[i]
+			var detail: String = "J%d · %s · tick %d · cuerpo %.0f" % [i + 1, f.state, f.age, sim.body(f).size.y]
+			if f.state == "attack":
+				detail += " · alcance %.0f" % sim.combat_profile(f).reaches[f.attack]
+			label_at(Vector2(82, 313 + i * 28), detail, 17, ink)
+		label_at(Vector2(82, 375), "Distancia %.0f · invulnerable %s / %s" % [absf(sim.fighters[1].pos.x - sim.fighters[0].pos.x), sim.invulnerable(sim.fighters[0]), sim.invulnerable(sim.fighters[1])], 17, ink)
+	draw_rect(Rect2(64, 790, 1472, 76), Color(0.10, 0.12, 0.10, 0.79))
+	label_at(Vector2(84, 819), settings.control_hint(0), 16, Color("ece5d6"))
+	label_at(Vector2(84, 849), settings.control_hint(1), 16, Color("ece5d6"))
+	label_at(Vector2(1160, 819), "Esc / Start · Pausa y escenario", 16, Color("ece5d6"))
+	label_at(Vector2(1160, 849), "F1 · Colisiones    R · Reiniciar", 16, Color("cec5b3"))
+
+func draw_laboratory() -> void:
 	var dim := Color("585855")
 	draw_rect(Rect2(0, 0, 1600, 900), Color("080809"))
 	label_at(Vector2(64, 66), "M A A I", 38)
@@ -173,7 +352,7 @@ func _draw() -> void:
 	for i in range(2):
 		var x: float = 120.0 if i == 0 else 1210.0
 		label_at(Vector2(x, 165), "JUGADOR %d" % (i + 1), 22)
-		label_at(Vector2(x, 190), "Figura de prueba · espada", 15, dim)
+		label_at(Vector2(x, 190), CharacterCatalog.display_name(selected_characters[i]), 15, dim)
 		for r in range(sim.target_wins):
 			draw_circle(Vector2(x + 8 + r * 24, 215), 5, Color("d8d8d2") if r < sim.scores[i] else Color("333332"))
 		var f: Dictionary = sim.fighters[i]
@@ -190,22 +369,24 @@ func _draw() -> void:
 			centered(278, sim.result, 28)
 		elif sim.phase == "match_over":
 			centered(278, "PARTIDA · Gana el jugador %d" % (1 if sim.scores[0] > sim.scores[1] else 2), 30)
-			centered(315, "R · Revancha     Esc · Menú", 19)
+			centered(315, "R · Revancha     Esc · Pausa y opciones", 19)
 		else:
-			centered(166, "PRÁCTICA LIBRE" if practice else "AL MEJOR DE %d" % best_of, 16, dim)
+			centered(166, "DEMOSTRACIÓN · " + DEMO_STAGES[int(maxi(0, demo_tick - 1) / 120.0) % DEMO_STAGES.size()] if demo else ("PRÁCTICA LIBRE" if practice else "AL MEJOR DE %d" % best_of), 16, dim)
 	if debug_boxes and playing:
 		for i in range(2):
 			var f: Dictionary = sim.fighters[i]
 			var info: String = "J%d  %s · tick de acción %d" % [i + 1, f.state, f.age]
 			if f.state == "attack":
 				info += " · " + sim.config.attacks[f.attack].display_name
+				info += " · alcance máx. %.0f" % sim.combat_profile(f).reaches[f.attack]
+			info += " · cuerpo %.0f" % sim.body(f).size.y
 			label_at(Vector2(64, 330 + i * 27), info, 16, Color("a4a49d"))
 		label_at(Vector2(64, 389), "Distancia %.0f px  |  simulación %d  |  invulnerable: %s / %s" % [sim.fighters[1].pos.x - sim.fighters[0].pos.x, sim.tick, sim.invulnerable(sim.fighters[0]), sim.invulnerable(sim.fighters[1])], 16, dim)
 		if not sim.last_resolution.is_empty():
 			label_at(Vector2(64, 416), "Último impacto: tick %d · doble KO %s" % [sim.last_resolution.tick, sim.last_resolution.double_ko], 16, dim)
 	draw_line(Vector2(64, 772), Vector2(1536, 772), Color("333332"))
-	label_at(Vector2(65, 809), "J1   A / D mover    W salto    S sprint    Q esquiva    F / G / H ataques", 17)
-	label_at(Vector2(65, 840), "J2   ← / → mover    ↑ salto    ↓ sprint    K esquiva    U / I / O ataques", 17)
+	label_at(Vector2(65, 809), settings.control_hint(0), 17)
+	label_at(Vector2(65, 840), settings.control_hint(1), 17)
 	label_at(Vector2(1100, 809), "F1 · Colisiones     Espacio · Pausa", 16, Color("a0a09b"))
-	label_at(Vector2(1100, 840), "F2 · Un tick     R · Reinicio     Esc · Menú", 16, Color("a0a09b"))
-	centered(880, "60 Hz · Valores experimentales · Dos mandos compatibles: A salto / RB sprint / LB esquiva / X Y B ataques", 14, dim)
+	label_at(Vector2(1100, 840), "F2 · Un tick     R · Reinicio     Esc · Opciones", 16, Color("a0a09b"))
+	centered(880, "Alcances propios por arma · Esc / Start: pausa · Controles configurables en Opciones", 14, dim)

@@ -7,6 +7,7 @@ func _initialize() -> void:
 		quit(1)
 		return
 	var instance = scene.instantiate()
+	instance.play_intro_on_start = false
 	root.add_child.call_deferred(instance)
 	finish.call_deferred(instance)
 

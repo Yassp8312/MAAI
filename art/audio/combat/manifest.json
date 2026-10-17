@@ -1,0 +1,1108 @@
+{
+  "files": {
+    "tsukiyo/step-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_000.ogg",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -18,
+      "seconds": 0.22
+    },
+    "tsukiyo/land-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_000.ogg",
+        "kenney-impact/impactSoft_medium_000.ogg",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.22
+    },
+    "tsukiyo/weapon-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-1.wav",
+        "starninjas-sword/sword.1.ogg"
+      ],
+      "peak_dbfs": -13,
+      "seconds": 0.14
+    },
+    "tsukiyo/impact-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-1.wav",
+        "kenney-impact/impactPunch_medium_000.ogg",
+        "kenney-rpg/chop.ogg",
+        "starninjas-sword/sword.1.ogg"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.1587
+    },
+    "tsukiyo/dodge-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-1.wav",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.3
+    },
+    "tsukiyo/collapse-0.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_000.ogg",
+        "kenney-rpg/cloth1.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.4
+    },
+    "tsukiyo/step-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_001.ogg",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -18,
+      "seconds": 0.22
+    },
+    "tsukiyo/land-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_001.ogg",
+        "kenney-impact/impactSoft_medium_001.ogg",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.22
+    },
+    "tsukiyo/weapon-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-2.wav",
+        "starninjas-sword/sword.2.ogg"
+      ],
+      "peak_dbfs": -13,
+      "seconds": 0.14
+    },
+    "tsukiyo/impact-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-2.wav",
+        "kenney-impact/impactPunch_medium_001.ogg",
+        "kenney-rpg/chop.ogg",
+        "starninjas-sword/sword.2.ogg"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.1503
+    },
+    "tsukiyo/dodge-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-2.wav",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.3
+    },
+    "tsukiyo/collapse-1.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_001.ogg",
+        "kenney-rpg/cloth1.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.4
+    },
+    "tsukiyo/step-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_002.ogg",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -18,
+      "seconds": 0.22
+    },
+    "tsukiyo/land-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_002.ogg",
+        "kenney-impact/impactSoft_medium_002.ogg",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.22
+    },
+    "tsukiyo/weapon-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-3.wav",
+        "starninjas-sword/sword.3.ogg"
+      ],
+      "peak_dbfs": -13,
+      "seconds": 0.14
+    },
+    "tsukiyo/impact-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-3.wav",
+        "kenney-impact/impactPunch_medium_002.ogg",
+        "kenney-rpg/chop.ogg",
+        "starninjas-sword/sword.3.ogg"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.1746
+    },
+    "tsukiyo/dodge-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-3.wav",
+        "kenney-rpg/cloth1.ogg"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.3
+    },
+    "tsukiyo/collapse-2.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_002.ogg",
+        "kenney-rpg/cloth1.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.4
+    },
+    "ren/step-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_002.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "vehicle-apparel/boots-leather-step-01.wav"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.22
+    },
+    "ren/land-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_002.ogg",
+        "kenney-impact/impactSoft_medium_000.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "vehicle-apparel/boots-leather-step-01.wav"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.22
+    },
+    "ren/weapon-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-5.wav",
+        "starninjas-sword/sword.6.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.22
+    },
+    "ren/impact-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-5.wav",
+        "kenney-impact/impactPunch_heavy_000.ogg",
+        "kenney-rpg/chop.ogg",
+        "starninjas-sword/sword.6.ogg"
+      ],
+      "peak_dbfs": -8,
+      "seconds": 0.28
+    },
+    "ren/dodge-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-1.wav",
+        "kenney-rpg/clothBelt.ogg"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.3
+    },
+    "ren/collapse-0.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_000.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.4
+    },
+    "ren/step-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_003.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "vehicle-apparel/boots-leather-step-02.wav"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.22
+    },
+    "ren/land-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_003.ogg",
+        "kenney-impact/impactSoft_medium_001.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "vehicle-apparel/boots-leather-step-02.wav"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.22
+    },
+    "ren/weapon-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-6.wav",
+        "starninjas-sword/sword.7.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.22
+    },
+    "ren/impact-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-6.wav",
+        "kenney-impact/impactPunch_heavy_001.ogg",
+        "kenney-rpg/chop.ogg",
+        "starninjas-sword/sword.7.ogg"
+      ],
+      "peak_dbfs": -8,
+      "seconds": 0.2739
+    },
+    "ren/dodge-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-2.wav",
+        "kenney-rpg/clothBelt.ogg"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.3
+    },
+    "ren/collapse-1.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_001.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.4
+    },
+    "ren/step-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_004.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "vehicle-apparel/boots-leather-step-03.wav"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.22
+    },
+    "ren/land-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_004.ogg",
+        "kenney-impact/impactSoft_medium_002.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "vehicle-apparel/boots-leather-step-03.wav"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.22
+    },
+    "ren/weapon-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-7.wav",
+        "starninjas-sword/sword.8.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.22
+    },
+    "ren/impact-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-7.wav",
+        "kenney-impact/impactPunch_heavy_002.ogg",
+        "kenney-rpg/chop.ogg",
+        "starninjas-sword/sword.8.ogg"
+      ],
+      "peak_dbfs": -8,
+      "seconds": 0.2378
+    },
+    "ren/dodge-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-3.wav",
+        "kenney-rpg/clothBelt.ogg"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.3
+    },
+    "ren/collapse-2.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_002.ogg",
+        "kenney-rpg/clothBelt.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.4
+    },
+    "daichi/step-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_004.ogg",
+        "kenney-impact/impactSoft_heavy_000.ogg",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.2
+    },
+    "daichi/land-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_004.ogg",
+        "kenney-impact/impactSoft_heavy_000.ogg",
+        "kenney-impact/impactSoft_medium_000.ogg",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.2
+    },
+    "daichi/weapon-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-8.wav",
+        "kenney-impact/impactWood_light_000.ogg"
+      ],
+      "peak_dbfs": -11,
+      "seconds": 0.1169
+    },
+    "daichi/impact-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-8.wav",
+        "kenney-impact/impactPunch_heavy_000.ogg",
+        "kenney-impact/impactWood_light_000.ogg",
+        "kenney-rpg/chop.ogg"
+      ],
+      "peak_dbfs": -8,
+      "seconds": 0.28
+    },
+    "daichi/dodge-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-1.wav",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -13,
+      "seconds": 0.2357
+    },
+    "daichi/collapse-0.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_000.ogg",
+        "kenney-rpg/beltHandle1.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.2961
+    },
+    "daichi/step-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_000.ogg",
+        "kenney-impact/impactSoft_heavy_001.ogg",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.2
+    },
+    "daichi/land-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_000.ogg",
+        "kenney-impact/impactSoft_heavy_001.ogg",
+        "kenney-impact/impactSoft_medium_001.ogg",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.2
+    },
+    "daichi/weapon-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-9.wav",
+        "kenney-impact/impactWood_light_001.ogg"
+      ],
+      "peak_dbfs": -11,
+      "seconds": 0.1243
+    },
+    "daichi/impact-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-9.wav",
+        "kenney-impact/impactPunch_heavy_001.ogg",
+        "kenney-impact/impactWood_light_001.ogg",
+        "kenney-rpg/chop.ogg"
+      ],
+      "peak_dbfs": -8,
+      "seconds": 0.28
+    },
+    "daichi/dodge-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-2.wav",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -13,
+      "seconds": 0.2357
+    },
+    "daichi/collapse-1.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_001.ogg",
+        "kenney-rpg/beltHandle1.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.3031
+    },
+    "daichi/step-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_001.ogg",
+        "kenney-impact/impactSoft_heavy_002.ogg",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.2
+    },
+    "daichi/land-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_001.ogg",
+        "kenney-impact/impactSoft_heavy_002.ogg",
+        "kenney-impact/impactSoft_medium_002.ogg",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.2
+    },
+    "daichi/weapon-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-10.wav",
+        "kenney-impact/impactWood_light_002.ogg"
+      ],
+      "peak_dbfs": -11,
+      "seconds": 0.0884
+    },
+    "daichi/impact-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-10.wav",
+        "kenney-impact/impactPunch_heavy_002.ogg",
+        "kenney-impact/impactWood_light_002.ogg",
+        "kenney-rpg/chop.ogg"
+      ],
+      "peak_dbfs": -8,
+      "seconds": 0.28
+    },
+    "daichi/dodge-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-3.wav",
+        "kenney-rpg/beltHandle1.ogg"
+      ],
+      "peak_dbfs": -13,
+      "seconds": 0.2357
+    },
+    "daichi/collapse-2.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_002.ogg",
+        "kenney-rpg/beltHandle1.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -12,
+      "seconds": 0.3244
+    },
+    "nao/step-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_carpet_000.ogg",
+        "kenney-impact/footstep_concrete_001.ogg",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -22,
+      "seconds": 0.22
+    },
+    "nao/land-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_carpet_000.ogg",
+        "kenney-impact/footstep_concrete_001.ogg",
+        "kenney-impact/impactSoft_medium_000.ogg",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.22
+    },
+    "nao/weapon-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-11.wav",
+        "kenney-rpg/knifeSlice.ogg"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.145
+    },
+    "nao/impact-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-11.wav",
+        "kenney-impact/impactPunch_medium_000.ogg",
+        "kenney-rpg/chop.ogg",
+        "kenney-rpg/knifeSlice.ogg"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.145
+    },
+    "nao/dodge-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-1.wav",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -23,
+      "seconds": 0.2218
+    },
+    "nao/collapse-0.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_000.ogg",
+        "kenney-rpg/cloth2.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.2705
+    },
+    "nao/step-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_carpet_001.ogg",
+        "kenney-impact/footstep_concrete_002.ogg",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -22,
+      "seconds": 0.22
+    },
+    "nao/land-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_carpet_001.ogg",
+        "kenney-impact/footstep_concrete_002.ogg",
+        "kenney-impact/impactSoft_medium_001.ogg",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.22
+    },
+    "nao/weapon-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-12.wav",
+        "kenney-rpg/knifeSlice2.ogg"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.145
+    },
+    "nao/impact-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-12.wav",
+        "kenney-impact/impactPunch_medium_001.ogg",
+        "kenney-rpg/chop.ogg",
+        "kenney-rpg/knifeSlice2.ogg"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.145
+    },
+    "nao/dodge-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-2.wav",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -23,
+      "seconds": 0.2218
+    },
+    "nao/collapse-1.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_001.ogg",
+        "kenney-rpg/cloth2.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.2705
+    },
+    "nao/step-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_carpet_002.ogg",
+        "kenney-impact/footstep_concrete_003.ogg",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -22,
+      "seconds": 0.22
+    },
+    "nao/land-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_carpet_002.ogg",
+        "kenney-impact/footstep_concrete_003.ogg",
+        "kenney-impact/impactSoft_medium_002.ogg",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.22
+    },
+    "nao/weapon-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-13.wav",
+        "kenney-rpg/knifeSlice.ogg"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.145
+    },
+    "nao/impact-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-13.wav",
+        "kenney-impact/impactPunch_medium_002.ogg",
+        "kenney-rpg/chop.ogg",
+        "kenney-rpg/knifeSlice.ogg"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.145
+    },
+    "nao/dodge-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-3.wav",
+        "kenney-rpg/cloth2.ogg"
+      ],
+      "peak_dbfs": -23,
+      "seconds": 0.2218
+    },
+    "nao/collapse-2.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_002.ogg",
+        "kenney-rpg/cloth2.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.2705
+    },
+    "sayo/step-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_003.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "vehicle-apparel/arrow-feathers-01.wav"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.22
+    },
+    "sayo/land-0.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_003.ogg",
+        "kenney-impact/impactSoft_medium_000.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "vehicle-apparel/arrow-feathers-01.wav"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.22
+    },
+    "sayo/weapon-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-4.wav",
+        "kenney-rpg/bookFlip1.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "vehicle-apparel/arrow-feathers-01.wav"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.3
+    },
+    "sayo/impact-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-4.wav",
+        "kenney-impact/impactPunch_medium_000.ogg",
+        "kenney-rpg/bookFlip1.ogg",
+        "kenney-rpg/chop.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "vehicle-apparel/arrow-feathers-01.wav"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.3
+    },
+    "sayo/dodge-0.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-1.wav",
+        "kenney-rpg/cloth4.ogg"
+      ],
+      "peak_dbfs": -20,
+      "seconds": 0.3
+    },
+    "sayo/collapse-0.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_000.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.3575
+    },
+    "sayo/step-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_004.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "vehicle-apparel/arrow-feathers-02.wav"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.22
+    },
+    "sayo/land-1.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_004.ogg",
+        "kenney-impact/impactSoft_medium_001.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "vehicle-apparel/arrow-feathers-02.wav"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.22
+    },
+    "sayo/weapon-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-4.wav",
+        "kenney-rpg/bookFlip2.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "vehicle-apparel/arrow-feathers-02.wav"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.3
+    },
+    "sayo/impact-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-4.wav",
+        "kenney-impact/impactPunch_medium_001.ogg",
+        "kenney-rpg/bookFlip2.ogg",
+        "kenney-rpg/chop.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "vehicle-apparel/arrow-feathers-02.wav"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.3
+    },
+    "sayo/dodge-1.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-2.wav",
+        "kenney-rpg/cloth4.ogg"
+      ],
+      "peak_dbfs": -20,
+      "seconds": 0.3
+    },
+    "sayo/collapse-1.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_001.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.3575
+    },
+    "sayo/step-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_000.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "vehicle-apparel/arrow-feathers-03.wav"
+      ],
+      "peak_dbfs": -19,
+      "seconds": 0.22
+    },
+    "sayo/land-2.wav": {
+      "sources": [
+        "kenney-impact/footstep_concrete_000.ogg",
+        "kenney-impact/impactSoft_medium_002.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "vehicle-apparel/arrow-feathers-03.wav"
+      ],
+      "peak_dbfs": -16,
+      "seconds": 0.22
+    },
+    "sayo/weapon-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-4.wav",
+        "kenney-rpg/bookFlip3.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "vehicle-apparel/arrow-feathers-03.wav"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.1523
+    },
+    "sayo/impact-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-4.wav",
+        "kenney-impact/impactPunch_medium_002.ogg",
+        "kenney-rpg/bookFlip3.ogg",
+        "kenney-rpg/chop.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "vehicle-apparel/arrow-feathers-03.wav"
+      ],
+      "peak_dbfs": -10,
+      "seconds": 0.1649
+    },
+    "sayo/dodge-2.wav": {
+      "sources": [
+        "artisticdude-swishes/swish-3.wav",
+        "kenney-rpg/cloth4.ogg"
+      ],
+      "peak_dbfs": -20,
+      "seconds": 0.3
+    },
+    "sayo/collapse-2.wav": {
+      "sources": [
+        "kenney-impact/impactSoft_heavy_002.ogg",
+        "kenney-rpg/cloth4.ogg",
+        "kenney-rpg/dropLeather.ogg"
+      ],
+      "peak_dbfs": -15,
+      "seconds": 0.3575
+    }
+  },
+  "sources": {
+    "kenney-impact/footstep_concrete_000.ogg": {
+      "file": "sources/kenney-impact/footstep_concrete_000.ogg",
+      "sha256": "d7267e183067757c92c169de2a379abea592cfca6b39bb2e8feea15221ad79fe"
+    },
+    "kenney-rpg/cloth1.ogg": {
+      "file": "sources/kenney-rpg/cloth1.ogg",
+      "sha256": "ddb93a3671233f95da0e0b10367f082f7eb42fa6caaddcf776410aa8833c747d"
+    },
+    "kenney-impact/impactSoft_medium_000.ogg": {
+      "file": "sources/kenney-impact/impactSoft_medium_000.ogg",
+      "sha256": "7d3ba0bb5e60a11b5d3e558c141303dcf494256675fbf753c0d252d2cf0481e3"
+    },
+    "artisticdude-swishes/swish-1.wav": {
+      "file": "sources/artisticdude-swishes/swish-1.wav",
+      "sha256": "9a15c881345c1ce1c39cc31f52f081c8c4dc81fa41111e0079400f39d3ba0e45"
+    },
+    "starninjas-sword/sword.1.ogg": {
+      "file": "sources/starninjas-sword/sword.1.ogg",
+      "sha256": "4a3e80705619cbd7500682ab51004011ddf67e14ccf1818ceb9e5b539fe42b75"
+    },
+    "kenney-impact/impactPunch_medium_000.ogg": {
+      "file": "sources/kenney-impact/impactPunch_medium_000.ogg",
+      "sha256": "486988aa2d6440ffc4c62a0e8ccf3c23673ba84424bd4723378d451b7255eb5c"
+    },
+    "kenney-rpg/chop.ogg": {
+      "file": "sources/kenney-rpg/chop.ogg",
+      "sha256": "d00c2b3c9fff07e376145c8c8c45c90e5084ec192f6ce0387db233f7b86f1486"
+    },
+    "kenney-impact/impactSoft_heavy_000.ogg": {
+      "file": "sources/kenney-impact/impactSoft_heavy_000.ogg",
+      "sha256": "49e7ca88743fca974bb8676ea138b751cfd8f9033b5e7af8736c2a215d6edbc1"
+    },
+    "kenney-rpg/dropLeather.ogg": {
+      "file": "sources/kenney-rpg/dropLeather.ogg",
+      "sha256": "097e1d3b74949b0145fda0519d40b7e0773ab82ec4858727f95be830927e1a45"
+    },
+    "kenney-impact/footstep_concrete_001.ogg": {
+      "file": "sources/kenney-impact/footstep_concrete_001.ogg",
+      "sha256": "507a75eb19b897087855a3be3cf11a12d7fa37d143ad535eeebe0b8031c7325d"
+    },
+    "kenney-impact/impactSoft_medium_001.ogg": {
+      "file": "sources/kenney-impact/impactSoft_medium_001.ogg",
+      "sha256": "7642a4fd43e547afe4f7adfadb3dabb681c0ff512f52c1674bae30a726841faf"
+    },
+    "artisticdude-swishes/swish-2.wav": {
+      "file": "sources/artisticdude-swishes/swish-2.wav",
+      "sha256": "1ce7752cce3d43f16fc222ad7f7ffb69d9a5fc01e64b93d205765fc37b8e9b0d"
+    },
+    "starninjas-sword/sword.2.ogg": {
+      "file": "sources/starninjas-sword/sword.2.ogg",
+      "sha256": "e74221f6cec0acaa7c19095618c683c3cdc1741f02193b61cb28a2ec56cbfce2"
+    },
+    "kenney-impact/impactPunch_medium_001.ogg": {
+      "file": "sources/kenney-impact/impactPunch_medium_001.ogg",
+      "sha256": "e71d23abcc3f10d9d6bc9615b2a431fff70b12333a5fcdd9964457564ace4349"
+    },
+    "kenney-impact/impactSoft_heavy_001.ogg": {
+      "file": "sources/kenney-impact/impactSoft_heavy_001.ogg",
+      "sha256": "4d0096364ba9e46119d2ff6df493fdc101bd2e1efae061da5e5f77a53b3fdcb6"
+    },
+    "kenney-impact/footstep_concrete_002.ogg": {
+      "file": "sources/kenney-impact/footstep_concrete_002.ogg",
+      "sha256": "b21fa546d74941196b25da8a20b7010abd8c05c4fcf93545d1f344e66a664e13"
+    },
+    "kenney-impact/impactSoft_medium_002.ogg": {
+      "file": "sources/kenney-impact/impactSoft_medium_002.ogg",
+      "sha256": "5069e3571a77d7f7aae9ef71d0364aa245fb7d64a7c8cc9956f221d03088c089"
+    },
+    "artisticdude-swishes/swish-3.wav": {
+      "file": "sources/artisticdude-swishes/swish-3.wav",
+      "sha256": "55b100e2c67fa43dad8510e31e85bbd51a68d5ce84a6e0259e21e19030083e24"
+    },
+    "starninjas-sword/sword.3.ogg": {
+      "file": "sources/starninjas-sword/sword.3.ogg",
+      "sha256": "ce09eb2987531d1323415065d7811a9cf0ea8639766d9fa77655d602e7e14989"
+    },
+    "kenney-impact/impactPunch_medium_002.ogg": {
+      "file": "sources/kenney-impact/impactPunch_medium_002.ogg",
+      "sha256": "6492f9ccbc8d24dcef607bb1b48790b7870961474561f7fe5601e1c73a3018ef"
+    },
+    "kenney-impact/impactSoft_heavy_002.ogg": {
+      "file": "sources/kenney-impact/impactSoft_heavy_002.ogg",
+      "sha256": "d130ae541951243d3f6ed963d0057450a445ffe117fbf9a084d34eb1635cb563"
+    },
+    "kenney-rpg/clothBelt.ogg": {
+      "file": "sources/kenney-rpg/clothBelt.ogg",
+      "sha256": "f29560a2aea95bbfeb643e1e8f56ec2b6f7e32f32ce4e140645a36db81de3253"
+    },
+    "vehicle-apparel/boots-leather-step-01.wav": {
+      "file": "sources/vehicle-apparel/boots-leather-step-01.wav",
+      "sha256": "5b0de415a95f7ad5ef4541d8142415587b2898c43ac26a45862cf14756894a06"
+    },
+    "artisticdude-swishes/swish-5.wav": {
+      "file": "sources/artisticdude-swishes/swish-5.wav",
+      "sha256": "4db41f2d2f97caf94627be05ff2870217fecc86534cf30f2aab413b847a0d50a"
+    },
+    "starninjas-sword/sword.6.ogg": {
+      "file": "sources/starninjas-sword/sword.6.ogg",
+      "sha256": "5b6eaaac9c552ce364cfdea3c12cef846c89796fc9bb880181615f43ee4e4779"
+    },
+    "kenney-impact/impactPunch_heavy_000.ogg": {
+      "file": "sources/kenney-impact/impactPunch_heavy_000.ogg",
+      "sha256": "b33a8f14068aec24ec69ba85e5e87fdc41228975f6a1a3e44a6e7d6fc3d9f8d8"
+    },
+    "kenney-impact/footstep_concrete_003.ogg": {
+      "file": "sources/kenney-impact/footstep_concrete_003.ogg",
+      "sha256": "8b513c2f0316324060b9174b8f28df6c2147418c506e6a53b77f18e149a5547b"
+    },
+    "vehicle-apparel/boots-leather-step-02.wav": {
+      "file": "sources/vehicle-apparel/boots-leather-step-02.wav",
+      "sha256": "923d9b9e09947dc8354b39e113f3cdb04e61dc09ecf87543e8813f408c2e60df"
+    },
+    "artisticdude-swishes/swish-6.wav": {
+      "file": "sources/artisticdude-swishes/swish-6.wav",
+      "sha256": "edcaacf008da7ae692566f4fe0d6023ea68d0a014149889e95209be7ee0b746d"
+    },
+    "starninjas-sword/sword.7.ogg": {
+      "file": "sources/starninjas-sword/sword.7.ogg",
+      "sha256": "66f2a2e63182fa14470a63fc4a862ff77fa861f69a6a41d8e9874c9853c2d9dd"
+    },
+    "kenney-impact/impactPunch_heavy_001.ogg": {
+      "file": "sources/kenney-impact/impactPunch_heavy_001.ogg",
+      "sha256": "f92f5cb6ba4ff2766497292ffd90865654317eeca976f5652e0708dbdcdc0dd9"
+    },
+    "kenney-impact/footstep_concrete_004.ogg": {
+      "file": "sources/kenney-impact/footstep_concrete_004.ogg",
+      "sha256": "24dd8db2413e5b81ad181e1205c12a1c7801da5f85715d471b92a4b2f632e45e"
+    },
+    "vehicle-apparel/boots-leather-step-03.wav": {
+      "file": "sources/vehicle-apparel/boots-leather-step-03.wav",
+      "sha256": "f63cc8613d927915c691257d8c12e3b62e1badd5079f503aa155f33c2d91c7e5"
+    },
+    "artisticdude-swishes/swish-7.wav": {
+      "file": "sources/artisticdude-swishes/swish-7.wav",
+      "sha256": "e6de737a34de16afed094d6170d7679149022f149e0a8356d2f029b0e8f4a4d7"
+    },
+    "starninjas-sword/sword.8.ogg": {
+      "file": "sources/starninjas-sword/sword.8.ogg",
+      "sha256": "97f55774d7f0602c5f87e4ef289fcdf7ff07eea987ddc52849909d74374458a6"
+    },
+    "kenney-impact/impactPunch_heavy_002.ogg": {
+      "file": "sources/kenney-impact/impactPunch_heavy_002.ogg",
+      "sha256": "7993dd4c156b9979ad69f17be5ebe31850b16039a3857f8477141be54dfee1b3"
+    },
+    "kenney-rpg/beltHandle1.ogg": {
+      "file": "sources/kenney-rpg/beltHandle1.ogg",
+      "sha256": "2ef665bd8b65dbe669f4560be38a6d8f04a162e618b15a49e3e71b58e558aab0"
+    },
+    "artisticdude-swishes/swish-8.wav": {
+      "file": "sources/artisticdude-swishes/swish-8.wav",
+      "sha256": "113a3709ad889ad2fcf38eaceaf4eb9d67ffe1e96713fed93a6f0aed08769980"
+    },
+    "kenney-impact/impactWood_light_000.ogg": {
+      "file": "sources/kenney-impact/impactWood_light_000.ogg",
+      "sha256": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3"
+    },
+    "artisticdude-swishes/swish-9.wav": {
+      "file": "sources/artisticdude-swishes/swish-9.wav",
+      "sha256": "123883f006ce55feecbff11eea5f87c4493df4399989983037144570a23723c1"
+    },
+    "kenney-impact/impactWood_light_001.ogg": {
+      "file": "sources/kenney-impact/impactWood_light_001.ogg",
+      "sha256": "4b76bf3ccc8e60d19188f3165b778a7817786faa6887c55d9049bcbeef3b425f"
+    },
+    "artisticdude-swishes/swish-10.wav": {
+      "file": "sources/artisticdude-swishes/swish-10.wav",
+      "sha256": "4f7381a76f280d3f36f962ac3f44f16f77eec44797f30715d063c81ea3859024"
+    },
+    "kenney-impact/impactWood_light_002.ogg": {
+      "file": "sources/kenney-impact/impactWood_light_002.ogg",
+      "sha256": "b183cf7a5bd783817e0e4b82af34ac6658fa1927049089dadc8b15c2ecc771dc"
+    },
+    "kenney-rpg/cloth2.ogg": {
+      "file": "sources/kenney-rpg/cloth2.ogg",
+      "sha256": "8a7451193c38bc05483aec25dd193e163a15d44cf7fff04ac7912573231b0201"
+    },
+    "kenney-impact/footstep_carpet_000.ogg": {
+      "file": "sources/kenney-impact/footstep_carpet_000.ogg",
+      "sha256": "b9524658b52a99a20590f8feefc103088637fd13ea8ec35811aee785e1f2f330"
+    },
+    "artisticdude-swishes/swish-11.wav": {
+      "file": "sources/artisticdude-swishes/swish-11.wav",
+      "sha256": "9e81d548d8215fbb36f7a41b5771d4b52c2fd02fbb9b5ff9a4c65118fd88ee4d"
+    },
+    "kenney-rpg/knifeSlice.ogg": {
+      "file": "sources/kenney-rpg/knifeSlice.ogg",
+      "sha256": "4cd96dc630bed9840c15f1dd2306da2cc56a4da26a5d3f1a03c5a7265ac5e54f"
+    },
+    "kenney-impact/footstep_carpet_001.ogg": {
+      "file": "sources/kenney-impact/footstep_carpet_001.ogg",
+      "sha256": "9af3c3f76705107339e72036e4053bdca3eaa50ad31c8c929f42ce8d40e5d781"
+    },
+    "artisticdude-swishes/swish-12.wav": {
+      "file": "sources/artisticdude-swishes/swish-12.wav",
+      "sha256": "0513a86d428d9ed8601e93b8554580a5932c6c1a82d39d81a8f48883f1807a67"
+    },
+    "kenney-rpg/knifeSlice2.ogg": {
+      "file": "sources/kenney-rpg/knifeSlice2.ogg",
+      "sha256": "6c2064d0ef988d1ec3d56868e823ea8823a5cac00f2742560052633529407def"
+    },
+    "kenney-impact/footstep_carpet_002.ogg": {
+      "file": "sources/kenney-impact/footstep_carpet_002.ogg",
+      "sha256": "9af3c3f76705107339e72036e4053bdca3eaa50ad31c8c929f42ce8d40e5d781"
+    },
+    "artisticdude-swishes/swish-13.wav": {
+      "file": "sources/artisticdude-swishes/swish-13.wav",
+      "sha256": "698230ba3fe05a68c18d68cd6b3a07fb98e6c1198bb1a4238592ee9912c02c77"
+    },
+    "kenney-rpg/cloth4.ogg": {
+      "file": "sources/kenney-rpg/cloth4.ogg",
+      "sha256": "e7ab9a6c4466dea874196c61f59bf1da05cfe58748f42fadd695d441a154a99b"
+    },
+    "vehicle-apparel/arrow-feathers-01.wav": {
+      "file": "sources/vehicle-apparel/arrow-feathers-01.wav",
+      "sha256": "15493cd9a472a426602ab46fa27b5f012aa0b678dbf07fae0c1f68967ce96f5c"
+    },
+    "kenney-rpg/bookFlip1.ogg": {
+      "file": "sources/kenney-rpg/bookFlip1.ogg",
+      "sha256": "fa81ac2fedc8c641661b87e349630a36c9800e795e0c800e029214efdbe26a7d"
+    },
+    "kenney-rpg/metalClick.ogg": {
+      "file": "sources/kenney-rpg/metalClick.ogg",
+      "sha256": "9851a69d0c613e13bceef08060ecc4148f098ef487927cbebe270d642398a3b3"
+    },
+    "artisticdude-swishes/swish-4.wav": {
+      "file": "sources/artisticdude-swishes/swish-4.wav",
+      "sha256": "0060f4a7040edce4cc50d1daa10a9cb76764128a942e4688339e69cd1d5d784c"
+    },
+    "vehicle-apparel/arrow-feathers-02.wav": {
+      "file": "sources/vehicle-apparel/arrow-feathers-02.wav",
+      "sha256": "5e2974eade6ba7238642a5993114d46d10fd28912e044cacebff0b9e18c0b4e2"
+    },
+    "kenney-rpg/bookFlip2.ogg": {
+      "file": "sources/kenney-rpg/bookFlip2.ogg",
+      "sha256": "3409042acbfaebc24c1a6327dc073e36f9250841712e96c5040da566a97df73c"
+    },
+    "vehicle-apparel/arrow-feathers-03.wav": {
+      "file": "sources/vehicle-apparel/arrow-feathers-03.wav",
+      "sha256": "e55532c884b4dadc4c7fead111b6cf4f14886aad602f1778bb747dd5ade355e3"
+    },
+    "kenney-rpg/bookFlip3.ogg": {
+      "file": "sources/kenney-rpg/bookFlip3.ogg",
+      "sha256": "c85db5dceb3f1df073e960630277eaa88a5afda0477c1ddd68dad707621767be"
+    }
+  },
+  "profiles": {
+    "tsukiyo": {
+      "foot": -18,
+      "weapon": -13,
+      "weight": 0.9,
+      "cloth": "cloth1.ogg",
+      "stone": 0,
+      "speed": 1.08
+    },
+    "ren": {
+      "foot": -15,
+      "weapon": -12,
+      "weight": 1.1,
+      "cloth": "clothBelt.ogg",
+      "stone": 2,
+      "speed": 0.94
+    },
+    "daichi": {
+      "foot": -12,
+      "weapon": -11,
+      "weight": 1.35,
+      "cloth": "beltHandle1.ogg",
+      "stone": 4,
+      "speed": 0.83
+    },
+    "nao": {
+      "foot": -22,
+      "weapon": -16,
+      "weight": 0.7,
+      "cloth": "cloth2.ogg",
+      "stone": 1,
+      "speed": 1.22
+    },
+    "sayo": {
+      "foot": -19,
+      "weapon": -15,
+      "weight": 0.85,
+      "cloth": "cloth4.ogg",
+      "stone": 3,
+      "speed": 1.03
+    }
+  }
+}

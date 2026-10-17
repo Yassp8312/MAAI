@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/character_combat.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+reaches = PackedFloat32Array(260, 170, 235, 210, 170, 175)
+dodge_height = 145.0

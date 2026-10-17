@@ -1,0 +1,74 @@
+{
+  "voice_bands_percent": {
+    "20-120 Hz": 54.86,
+    "120-300 Hz": 29.62,
+    "300-900 Hz": 5.88,
+    "900-1800 Hz": 2.92,
+    "1800-4500 Hz": 2.41,
+    "4500-10000 Hz": 4.04,
+    "10000-24000 Hz": 0.21
+  },
+  "duration_seconds": 47.2,
+  "tracks": [
+    {
+      "label": "A",
+      "source": "Ink Resolve.mp3",
+      "source_seconds": 163.173,
+      "excerpt_seconds": [
+        0,
+        47.2
+      ],
+      "source_bands_percent": {
+        "20-120 Hz": 25.67,
+        "120-300 Hz": 20.77,
+        "300-900 Hz": 33.17,
+        "900-1800 Hz": 13.57,
+        "1800-4500 Hz": 6.04,
+        "4500-10000 Hz": 0.62,
+        "10000-24000 Hz": 0.09
+      },
+      "gain_db": -6.58,
+      "mix_peak_dbfs": -2.13,
+      "voice_rms_during_speech_dbfs": -19.82,
+      "music_rms_during_speech_dbfs": -29.64,
+      "presence_reduction_during_speech_db": -5.63,
+      "music_blocks_dbfs": {
+        "0-13": -32.34,
+        "13-27": -28.68,
+        "27-36": -28.14,
+        "36-43.5": -27.16,
+        "43.5-45": -22.1
+      }
+    },
+    {
+      "label": "B",
+      "source": "Ink Resolve (1).mp3",
+      "source_seconds": 173.974,
+      "excerpt_seconds": [
+        0,
+        47.2
+      ],
+      "source_bands_percent": {
+        "20-120 Hz": 20.11,
+        "120-300 Hz": 15.84,
+        "300-900 Hz": 39.09,
+        "900-1800 Hz": 18.12,
+        "1800-4500 Hz": 5.88,
+        "4500-10000 Hz": 0.67,
+        "10000-24000 Hz": 0.23
+      },
+      "gain_db": -8.52,
+      "mix_peak_dbfs": -1.8,
+      "voice_rms_during_speech_dbfs": -19.82,
+      "music_rms_during_speech_dbfs": -29.52,
+      "presence_reduction_during_speech_db": -5.53,
+      "music_blocks_dbfs": {
+        "0-13": -31.0,
+        "13-27": -28.79,
+        "27-36": -27.49,
+        "36-43.5": -29.08,
+        "43.5-45": -24.57
+      }
+    }
+  ]
+}

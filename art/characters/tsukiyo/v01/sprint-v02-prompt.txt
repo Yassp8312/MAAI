@@ -1,0 +1,17 @@
+Tool: built-in image_gen. Transparent background. 2026-10-16.
+References: reference.png (canonical identity), 01-guard-walk.png (approved movement).
+Output: 06-sprint-v02.png; integrated via atlas.json without rewriting source pixels.
+
+Use case: identity-preserve.
+Asset type: transparent 2D fighting game animation sprite sheet, six consecutive frames of ONE short graceful forward dash.
+Input image 1 is Tsukiyo's canonical design reference. Input image 2 is her approved guard/walk animation reference. Preserve exactly her adult face, slender proportions, long high ponytail and light hair ribbon, white wide kimono sleeves, black pleated hakama, wrapped ankles, sandals, curved long tachi held with both hands, refined monochrome ink illustration.
+Create a replacement SPRINT sequence that conveys a delicate, composed swordswoman moving quickly by smooth sliding footwork. Not a running cycle. Torso tall, shoulders relaxed, inclination at most 8 degrees, head stays almost level. Both hands keep the sword in a quiet diagonal forward guard, tip pointing up-right, close to the approved guard. Feet skim the floor; small controlled weight transfers under the hakama, no lifted knees or huge strides. Movement goes RIGHT.
+Exactly SIX distinct consecutive full-body poses arranged THREE columns by TWO rows in reading order:
+1. Guard beginning a tiny soft knee flexion, poised.
+2. Front foot reaches a modest distance forward close to the floor, rear foot pushes, slight forward inclination.
+3. Gliding with narrow graceful stance, rear foot gathering, hair and sleeves lag gently to the left.
+4. Rear foot drawn closer under the hips, controlled level body, hair and sleeve trailing softly.
+5. Front foot settles, torso rises smoothly, fabric begins to catch up.
+6. Returns to canonical poised upright guard, hair settles.
+This is a single launch-glide-settle motion over 0.3 seconds. Each pose should be related with subtle progression. No aggressive lunge, crouch, stomping, acrobatics, wind streaks, dust, ghost limbs, speed lines, motion blur, shadow, floor or background. Blade never extends horizontally. No extra equipment.
+All six characters exactly same drawing scale, camera, anatomy, weapon length and costume detail. Facing right in side/three-quarter profile, consistent with reference. Every full blade, ponytail and sandal completely inside its own cell with generous transparent margin on all four sides and wide clear gutters between cells. Feet aligned on a shared baseline within each row. True transparent background, no grid, no text, no labels. Clean elegant black and white ink linework, preserve opaque white clothing and skin.

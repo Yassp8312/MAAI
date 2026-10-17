@@ -1,0 +1,15 @@
+MAAI — música para el prólogo
+
+Generar una pieza instrumental. La intro montada dura aproximadamente 47 segundos. Pedir unos 60 segundos deja margen para editar el cierre; los tiempos son una intención de montaje, no una garantía del generador.
+
+PROMPT
+Instrumental cinematic underscore for a Japanese ink-painted samurai prologue. About 60 seconds. Intimate, restrained, melancholic and quietly ominous. Breath-rich shakuhachi, isolated koto notes, subtle low bowed-string textures, very spacious pauses. Free tempo, no driving rhythm. Leave ample space for a deep spoken narrator. Begin almost in silence, gradually deepen the tension, then resolve with a single distant temple bell and a long natural decay. Elegant, fragile and human; the weight of a promise before a fatal duel. No vocals, no choir, no spoken words, no epic brass, no bombastic drums, no trailer impacts, no EDM.
+
+MONTAJE OBJETIVO
+0–13 s: paisaje, soledad y caminos; entrada casi imperceptible.
+13–27 s: la promesa y los motivos de los personajes; notas separadas.
+27–36 s: memoria de Tsukiyo; tensión contenida, sin subida brusca.
+36–44 s: el reparto y la última frase; dejar espacio y retirar capas.
+44–47 s: MAAI; una campana distante y su resonancia.
+
+Conservar la narración en una pista separada. Una vez elegida la música, ajustar sus cortes, silencios y nivel a la voz dentro de Godot.

@@ -6,6 +6,7 @@ var checks: int = 0
 func _initialize() -> void:
 	test_motion()
 	test_sprint_buffer()
+	test_sprint_attacks()
 	test_attacks()
 	test_dodge()
 	test_rounds()
@@ -65,20 +66,57 @@ func test_sprint_buffer() -> void:
 	check(sim.fighters[0].state == "idle", "Sprint releases control on its first legal tick")
 	sim = fresh()
 	sim.step([{"action": "sprint"}, {}])
-	sim.step([{"action": "attack0"}, {}])
-	check(sim.fighters[0].state == "sprint", "Attack cannot cancel sprint")
+	sim.step([{"action": "jump"}, {}])
+	check(sim.fighters[0].state == "sprint", "Jump still cannot cancel sprint")
 	run_ticks(sim, 18)
 	check(sim.fighters[0].state == "idle", "Early buffered input expires")
 	sim = fresh()
 	sim.step([{"action": "sprint"}, {}])
 	run_ticks(sim, 14)
-	sim.step([{"action": "attack0"}, {}])
+	sim.step([{"action": "dodge"}, {}])
 	run_ticks(sim, 3)
-	check(sim.fighters[0].state == "attack" and sim.fighters[0].age == 0, "Late attack buffer fires exactly at sprint end")
+	check(sim.fighters[0].state == "dodge" and sim.fighters[0].age == 0, "Other late commands still buffer until sprint end")
 	sim = fresh()
 	sim.step([{"action": "attack0"}, {}])
 	sim.step([{"action": "dodge"}, {}])
 	check(sim.fighters[0].state == "attack", "Dodge cannot cancel an attack")
+
+func test_sprint_attacks() -> void:
+	for id in Simulation.CHARACTER_PROFILES:
+		for player in range(2):
+			for move in range(3):
+				for age in [1, 8, 17]:
+					var sim = fresh()
+					sim.set_character(player, id)
+					# Retreat makes sure the swing stays facing the rival, not the dash.
+					var inputs: Array = [{}, {}]
+					inputs[player] = {"action": "sprint", "axis": -sim.fighters[player].facing}
+					sim.step(inputs)
+					run_ticks(sim, age - 1)
+					var stopped_at: Vector2 = sim.fighters[player].pos
+					inputs[player] = {"action": "attack%d" % move}
+					sim.step(inputs)
+					var f: Dictionary = sim.fighters[player]
+					check(f.state == "attack" and f.age == 0 and f.attack == move, "%s J%d move %d interrupts sprint at tick %d" % [id, player + 1, move, age])
+					check(f.pos == stopped_at and f.buffer.is_empty(), "Attack plants feet immediately and consumes its command")
+					check(f.attack_dir == f.facing, "Retreating attack remains opponent-facing")
+					run_ticks(sim, sim.config.attacks[move].startup - 1)
+					check(not sim.active(f) and f.pos == stopped_at, "Sprint does not bypass attack startup or extend its reach by sliding")
+					sim.step([{}, {}])
+					check(sim.active(f), "Attack becomes active at its usual timing")
+	# Closing distance can now be stopped early to strike before the dash ends.
+	for player in range(2):
+		var sim = fresh()
+		sim.fighters[1].pos.x = sim.fighters[0].pos.x + 280
+		var inputs: Array = [{}, {}]
+		inputs[player] = {"action": "sprint"}
+		sim.step(inputs)
+		run_ticks(sim, 3)
+		inputs[player] = {"action": "attack0"}
+		sim.step(inputs)
+		run_ticks(sim, 9)
+		check(sim.phase == "round_over" and sim.scores[player] == 1, "Sprint into attack makes real contact on either side")
+		check(not sim.last_resolution.is_empty() and sim.last_resolution.contacts[0].attack_age == 9, "Sprint hit preserves the real active tick")
 
 func test_attacks() -> void:
 	var sim = fresh()

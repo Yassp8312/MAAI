@@ -2,3 +2,17 @@
 tmp/
 *.log
 
+# Local credentials and Python caches.
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+
+# Offline experiments and generated comparison media; runtime art stays tracked.
+/art/experiments/
+/art/reviews/**/*.mp4
+/art/reviews/**/*.ogg
+/art/reviews/**/*.ogg.import
+/art/characters/**/*-preview.mp4
+

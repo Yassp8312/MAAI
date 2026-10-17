@@ -1,5 +1,13 @@
 extends RefCounted
 ## Pure tick simulation: no input devices, sprites, audio or scene tree.
+const CHARACTER_PROFILES = {
+	"tsukiyo": preload("res://data/characters/tsukiyo.tres"),
+	"ren": preload("res://data/characters/ren.tres"),
+	"daichi": preload("res://data/characters/daichi.tres"),
+	"nao": preload("res://data/characters/nao.tres"),
+	"sayo": preload("res://data/characters/sayo.tres")
+}
+var character_ids: Array = ["tsukiyo", "tsukiyo"]
 var config: Resource
 var fighters: Array = []
 var tick: int = 0
@@ -29,7 +37,8 @@ func reset_round() -> void:
 			"previous": Vector2(520 + 560 * i, config.floor_y),
 			"vx": 0.0, "vy": 0.0, "facing": 1 if i == 0 else -1,
 			"state": "idle", "age": 0, "attack": -1, "attack_dir": 1,
-			"dash_dir": 1, "air_attacked": false, "buffer": "", "buffer_until": -1})
+			"dash_dir": 1, "air_attacked": false, "buffer": "", "buffer_until": -1,
+			"character_id": character_ids[i], "death_ground_age": 0})
 	phase = "countdown"
 	phase_tick = 0
 	result = ""
@@ -38,9 +47,24 @@ func reset_round() -> void:
 func airborne(f: Dictionary) -> bool:
 	return f.pos.y < config.floor_y or f.vy < 0.0
 
-func body(f: Dictionary, previous: bool = false) -> Rect2:
+func set_character(player: int, id: String) -> void:
+	if player < 0 or player >= 2 or not CHARACTER_PROFILES.has(id):
+		return
+	character_ids[player] = id
+	fighters[player].character_id = id
+
+func combat_profile(f: Dictionary) -> Resource:
+	return CHARACTER_PROFILES[f.character_id]
+
+func crouching(f: Dictionary) -> bool:
+	return f.state == "dodge" and f.age >= config.dodge_start and f.age < config.dodge_end
+
+func body(f: Dictionary, previous: bool = false, standing: bool = false) -> Rect2:
 	var p: Vector2 = f.previous if previous else f.pos
-	return Rect2(p - Vector2(config.body_size.x * 0.5, config.body_size.y), config.body_size)
+	var size: Vector2 = config.body_size
+	if not standing and crouching(f):
+		size.y = minf(size.y, combat_profile(f).dodge_height)
+	return Rect2(p - Vector2(size.x * 0.5, size.y), size)
 
 func invulnerable(f: Dictionary) -> bool:
 	return f.state == "dodge" and f.age >= config.dodge_start and f.age < config.dodge_end
@@ -56,10 +80,15 @@ func blade(f: Dictionary, old: bool = false) -> Rect2:
 	var age: int = f.age - 1 if old else f.age
 	var t: float = clampf(float(age - move.startup) / maxf(1.0, move.active - 1.0), 0.0, 1.0)
 	var offset: Vector2 = move.start.lerp(move.end, t)
+	var size: Vector2 = move.size
+	var base_reach: float = maxf(move.start.x, move.end.x) + move.size.x
+	var reach_scale: float = combat_profile(f).reaches[f.attack] / base_reach
+	offset.x *= reach_scale
+	size.x *= reach_scale
 	if f.attack_dir < 0:
-		offset.x = -offset.x - move.size.x
+		offset.x = -offset.x - size.x
 	var p: Vector2 = f.previous if old else f.pos
-	return Rect2(p + offset, move.size)
+	return Rect2(p + offset, size)
 
 func step(inputs: Array) -> void:
 	events.clear()
@@ -73,8 +102,21 @@ func step(inputs: Array) -> void:
 			phase_tick = 0
 		return
 	if phase == "round_over":
+		# Resolution stops attacks and input, but never gravity or landing.
+		var settled: bool = true
+		for f in fighters:
+			f.previous = f.pos
+			if f.state != "dead":
+				advance_action_clock(f)
+			if airborne(f):
+				f.pos.x = clampf(f.pos.x + f.vx, config.arena_left, config.arena_right)
+				advance_gravity(f)
+			elif f.state == "dead":
+				f.death_ground_age += 1
+			if airborne(f) or (f.state == "dead" and f.death_ground_age < 21):
+				settled = false
 		phase_tick += 1
-		if phase_tick >= config.round_close_ticks:
+		if phase_tick >= config.round_close_ticks and settled:
 			if scores.max() >= target_wins:
 				phase = "match_over"
 			else:
@@ -92,7 +134,9 @@ func step(inputs: Array) -> void:
 	for i in range(2):
 		var attacker: Dictionary = fighters[i]
 		var defender: Dictionary = fighters[1 - i]
-		if active(attacker) and swept_hit(attacker, defender):
+		# Standing envelope is only a feedback probe for a successfully avoided blow.
+		# Lethal collision always uses the actual current posture.
+		if active(attacker) and (swept_hit(attacker, defender) or (invulnerable(defender) and swept_hit(attacker, defender, true))):
 			if invulnerable(defender):
 				events.append({"kind": "perfect_dodge" if defender.age < config.perfect_end else "dodge", "player": 1 - i})
 			else:
@@ -111,10 +155,14 @@ func step(inputs: Array) -> void:
 		for i in range(2):
 			if killed[i]:
 				fighters[i].state = "dead"
+				fighters[i].age = 0
+				fighters[i].death_ground_age = 0
+				fighters[i].buffer = ""
+				fighters[i].vy = maxf(0.0, fighters[i].vy)
 		last_resolution = {"tick": tick, "contacts": contacts, "double_ko": killed[0] and killed[1]}
 		events.append({"kind": "resolution", "detail": last_resolution})
 
-func advance(f: Dictionary, input: Dictionary) -> void:
+func advance_action_clock(f: Dictionary) -> void:
 	f.age += 1
 	if f.state == "attack":
 		var a: Resource = config.attacks[f.attack]
@@ -124,6 +172,9 @@ func advance(f: Dictionary, input: Dictionary) -> void:
 		f.state = "idle"
 	elif f.state == "dodge" and f.age >= config.dodge_ticks:
 		f.state = "idle"
+
+func advance(f: Dictionary, input: Dictionary) -> void:
+	advance_action_clock(f)
 	var command: String = input.get("action", "")
 	if command != "":
 		f.buffer = command
@@ -131,7 +182,9 @@ func advance(f: Dictionary, input: Dictionary) -> void:
 	if tick > f.buffer_until:
 		f.buffer = ""
 	var axis: int = clampi(int(input.get("axis", 0)), -1, 1)
-	if f.state == "idle" and f.buffer != "":
+	# Attacks can interrupt a dash immediately; other commands keep their buffer.
+	var sprint_attack: bool = f.state == "sprint" and f.buffer.begins_with("attack")
+	if (f.state == "idle" or sprint_attack) and f.buffer != "":
 		if start_action(f, f.buffer, axis):
 			f.buffer = ""
 	if f.state == "sprint":
@@ -140,14 +193,18 @@ func advance(f: Dictionary, input: Dictionary) -> void:
 		f.pos.x += f.vx
 	elif f.state == "idle":
 		f.pos.x += axis * config.walk_speed
-	if airborne(f):
-		f.pos.y += f.vy
-		f.vy += config.gravity
-		if f.pos.y >= config.floor_y:
-			f.pos.y = config.floor_y
-			f.vy = 0.0
-			f.air_attacked = false
+	advance_gravity(f)
 	f.pos.x = clampf(f.pos.x, config.arena_left, config.arena_right)
+
+func advance_gravity(f: Dictionary) -> void:
+	if not airborne(f):
+		return
+	f.pos.y += f.vy
+	f.vy += config.gravity
+	if f.pos.y >= config.floor_y:
+		f.pos.y = config.floor_y
+		f.vy = 0.0
+		f.air_attacked = false
 
 func start_action(f: Dictionary, command: String, axis: int) -> bool:
 	if command.begins_with("attack"):
@@ -191,17 +248,20 @@ func resolve_pushboxes() -> void:
 		left.pos.x -= overlap * share
 		right.pos.x += overlap * (1.0 - share)
 
-func swept_hit(a: Dictionary, d: Dictionary) -> bool:
+func swept_hit(a: Dictionary, d: Dictionary, standing: bool = false) -> bool:
 	# Continuous moving AABB vs AABB, relative to defender movement.
 	# On the first active tick only the final pose is live (startup cannot kill).
 	var current: Rect2 = blade(a)
+	var hurt: Rect2 = body(d, false, standing)
 	var move: Resource = config.attacks[a.attack]
 	if a.age == move.startup:
-		return current.intersects(body(d))
+		return current.intersects(hurt)
 	var previous: Rect2 = blade(a, true)
 	var from: Vector2 = previous.get_center() - d.previous
 	var to: Vector2 = current.get_center() - d.pos
-	var target := Rect2(Vector2(-config.body_size.x * 0.5, -config.body_size.y) - current.size * 0.5, config.body_size + current.size)
+	# The current pose applies for this whole tick. Never sweep the old standing
+	# height into a new crouch, which would produce a phantom head hit.
+	var target := Rect2(hurt.position - d.pos - current.size * 0.5, hurt.size + current.size)
 	return segment_rect(from, to, target)
 
 func segment_rect(from: Vector2, to: Vector2, rect: Rect2) -> bool:

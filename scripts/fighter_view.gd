@@ -3,10 +3,26 @@ extends Node2D
 @export var sprite_frames: SpriteFrames
 @export var sprite_height: float = 250.0
 @export var foot_anchor: Vector2 = Vector2(-1, -1)
+@export var use_tsukiyo: bool = false
+@export var character_id: String = "tsukiyo"
+var character_animation: RefCounted
 var fighter: Dictionary = {}
 var simulation: RefCounted
 var player: int = 0
 var debug_boxes: bool = false
+
+func _ready() -> void:
+	if use_tsukiyo:
+		set_character(character_id)
+		var ink := ShaderMaterial.new()
+		ink.shader = preload("res://art/characters/tsukiyo/ink.gdshader")
+		material = ink
+
+func set_character(id: String) -> void:
+	character_id = id
+	if use_tsukiyo:
+		character_animation = preload("res://scripts/tsukiyo_animation.gd").new(id)
+	queue_redraw()
 
 func present(sim: RefCounted, index: int, debug: bool) -> void:
 	simulation = sim
@@ -22,10 +38,14 @@ func _draw() -> void:
 	var white := Color("e5e5df")
 	var gray := Color("9b9b96")
 	var facing: int = fighter.facing
-	var death: float = minf(1.0, simulation.phase_tick / 24.0) if fighter.state == "dead" else 0.0
+	var death: float = minf(1.0, fighter.death_ground_age / 24.0) if fighter.state == "dead" and not simulation.airborne(fighter) else 0.0
 	if death > 0.0:
 		draw_set_transform(Vector2(0, -8 * death), -facing * death * PI * 0.48, Vector2(1, 1))
-	if sprite_frames != null:
+	if character_animation != null:
+		var cel: Dictionary = character_animation.pose(simulation, player)
+		draw_set_transform(Vector2.ZERO, 0, Vector2(facing * cel.scale, cel.scale))
+		draw_mesh(cel.mesh, cel.texture)
+	elif sprite_frames != null:
 		draw_sprite_pose(facing)
 	else:
 		# Deliberately plain anatomical proxy. Its envelope matches the hurtbox.
@@ -57,7 +77,8 @@ func _draw() -> void:
 		blade.position -= position
 		var live: bool = simulation.active(fighter)
 		var color: Color = white if live else Color("666662")
-		draw_line(blade.position + Vector2(0, blade.size.y * 0.5), blade.end - Vector2(0, blade.size.y * 0.5), color, blade.size.y if live else 3.0, true)
+		if character_animation == null and sprite_frames == null:
+			draw_line(blade.position + Vector2(0, blade.size.y * 0.5), blade.end - Vector2(0, blade.size.y * 0.5), color, blade.size.y if live else 3.0, true)
 		if debug_boxes and live:
 			draw_rect(blade, Color(1, 1, 1, 0.13))
 			draw_rect(blade, white, false, 1)
@@ -90,7 +111,7 @@ func draw_sprite_pose(facing: int) -> void:
 	if fighter.state in ["attack", "sprint", "dodge"]:
 		clock_ticks = fighter.age
 	elif fighter.state == "dead":
-		clock_ticks = simulation.phase_tick
+		clock_ticks = 0 if simulation.airborne(fighter) else fighter.death_ground_age
 	var elapsed: float = clock_ticks / 60.0 * sprite_frames.get_animation_speed(animation)
 	if fighter.state == "attack":
 		var a: Resource = simulation.config.attacks[fighter.attack]
