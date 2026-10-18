@@ -3,6 +3,8 @@ const Style = preload("res://scripts/interface_style.gd")
 var game
 var resume_button: Button
 var options_button: Button
+var techniques_button: Button
+var training_button: Button
 var arena_button: Button
 var duel: Label
 var score: Label
@@ -36,13 +38,15 @@ func setup(owner_game: Node) -> void:
 	var buttons := VBoxContainer.new()
 	buttons.position = Vector2(852, 238)
 	buttons.size = Vector2(520, 412)
-	buttons.add_theme_constant_override("separation", 16)
+	buttons.add_theme_constant_override("separation", 10)
 	canvas.add_child(buttons)
 	resume_button = add_action(buttons, "Continuar el duelo", game.resume_game)
 	resume_button.primary = true
+	techniques_button = add_action(buttons, "Técnicas de los personajes", func(): game.move_guide.open())
+	training_button = add_action(buttons, "Ajustar entrenamiento", func(): game.training_menu.open())
 	options_button = add_action(buttons, "Opciones", game.open_options)
 	add_action(buttons, "Elegir personajes", game.return_to_selection)
-	arena_button = add_action(buttons, "Escenario: Patio al atardecer", game.toggle_arena, false)
+	arena_button = add_action(buttons, "Escenario: Patio de tinta", game.toggle_arena, false)
 	add_action(buttons, "Volver al menú principal", game.return_to_menu)
 	Style.label(canvas, "Esc / Start · Continuar", Rect2(870, 704, 490, 30), 17, false, Style.MUTED)
 	visibility_changed.connect(refresh_context)
@@ -50,7 +54,7 @@ func setup(owner_game: Node) -> void:
 
 func add_action(parent: Node, caption: String, action: Callable, literary: bool = true) -> Button:
 	var button := Style.button(parent, caption, literary)
-	button.custom_minimum_size = Vector2(510, 66)
+	button.custom_minimum_size = Vector2(510, 49)
 	button.pressed.connect(action)
 	button.focus_entered.connect(func(): game.menu.sound.cue("move"))
 	button.mouse_entered.connect(button.grab_focus)
@@ -60,8 +64,9 @@ func add_action(parent: Node, caption: String, action: Callable, literary: bool 
 func refresh_context() -> void:
 	if not visible or game == null:
 		return
+	training_button.visible = game.practice and not game.demo
 	duel.text = "%s  /  %s" % [game.selected_characters[0].capitalize(), game.selected_characters[1].capitalize()]
-	score.text = "PRÁCTICA LIBRE" if game.practice else "%d   —   %d     ·     AL MEJOR DE %d" % [game.sim.scores[0], game.sim.scores[1], game.best_of]
+	score.text = "ENTRENAMIENTO" if game.practice else "%d   —   %d     ·     AL MEJOR DE %d" % [game.sim.scores[0], game.sim.scores[1], game.best_of]
 	note.text = "Respira. El encuentro te espera.\nRetomarás el mismo instante."
 	if entrance != null:
 		entrance.kill()

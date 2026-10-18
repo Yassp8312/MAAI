@@ -56,7 +56,7 @@ func run() -> void:
 		check(cues.is_empty(), "%s idle is silent" % id)
 		for n in range(60):
 			step({"axis": 1})
-		check(count_reason("step") >= 3 and count_reason("step") <= 5, "%s walk follows cel contacts" % id)
+		check(count_reason("step") >= 3 and count_reason("step") <= 7, "%s walk follows cel contacts at its movement cadence" % id)
 		var paths: Dictionary = {}
 		for c in cues:
 			check(c.character == id and c.path.contains("/%s/" % id), "%s uses its own bank" % id)
@@ -80,7 +80,7 @@ func run() -> void:
 			frames(50)
 			check(count_reason("weapon") == 1 and count_reason("hit") == 0, "%s whiff %d: one swing, no hit" % [id, attack])
 			var swings: Array = cues.filter(func(c): return c.kind == "weapon")
-			check(swings.size() == 1 and swings[0].tick == started + sim.config.attacks[attack].startup, "Swing starts on active tick")
+			check(swings.size() == 1 and swings[0].tick == started + sim.attack_data(sim.fighters[0], attack).startup, "Swing starts on character-specific active tick")
 		fresh(id, 130)
 		step({"action": "attack0"})
 		frames(40)
@@ -103,7 +103,7 @@ func run() -> void:
 		frames(35)
 		check(count_reason("sprint_settle") == 1 and count_reason("weapon") == 1, "Sprint attack does not duplicate foot or weapon sounds")
 		var dash_swings: Array = cues.filter(func(c): return c.kind == "weapon")
-		check(dash_swings.size() == 1 and dash_swings[0].tick == attack_tick + 9, "Sprint attack audio follows active frames")
+		check(dash_swings.size() == 1 and dash_swings[0].tick == attack_tick + sim.attack_data(sim.fighters[0], 0).startup, "Sprint attack audio follows character-specific active frames")
 		fresh(id)
 		step({"action": "dodge"})
 		frames(30)

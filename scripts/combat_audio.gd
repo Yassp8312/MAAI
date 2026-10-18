@@ -2,7 +2,7 @@ extends Node2D
 ## Observes resolved simulation ticks. Audio never changes combat timing or rules.
 signal cue_emitted(cue: Dictionary)
 const IDS = ["tsukiyo", "ren", "daichi", "nao", "sayo"]
-const KINDS = ["step", "land", "weapon", "impact", "dodge", "collapse"]
+const KINDS = ["step", "land", "weapon", "impact", "dodge", "collapse", "parry"]
 const ATTACK_PITCH = [1.08, 0.95, 0.88, 1.12, 1.0, 0.86]
 var banks: Dictionary = {}
 var clips: Dictionary = {}
@@ -70,6 +70,11 @@ func after_step(sim: RefCounted) -> void:
 	for event in sim.events:
 		if event.kind == "resolution":
 			contacts.append_array(event.detail.contacts)
+		elif event.kind == "parry":
+			# Keep the attack's first active sound even though resolution changed its state.
+			if event.attack_age == sim.attack_data(sim.fighters[event.attacker]).startup:
+				cue(sim, event.attacker, "weapon", -3.0, ATTACK_PITCH[sim.fighters[event.attacker].attack])
+			cue(sim, event.player, "parry", 0.0, 1.0, "deflect", event.point.x)
 	for i in range(2):
 		var f: Dictionary = sim.fighters[i]
 		var old: Dictionary = previous[i]
@@ -83,7 +88,7 @@ func after_step(sim: RefCounted) -> void:
 		for contact in contacts:
 			if contact.attacker == i:
 				attack_age = contact.attack_age
-		if previous_phase == "fight" and f.attack >= 0 and attack_age == sim.config.attacks[f.attack].startup:
+		if previous_phase == "fight" and f.attack >= 0 and attack_age == sim.attack_data(f).startup:
 			cue(sim, i, "weapon", 0.0, ATTACK_PITCH[f.attack])
 		if previous_phase == "fight" and f.state == "dodge" and f.age == 0:
 			cue(sim, i, "dodge")
@@ -102,13 +107,13 @@ func after_step(sim: RefCounted) -> void:
 				cue(sim, i, "step", 1.0, 1.0, "sprint_launch")
 				cue(sim, i, "dodge", -2.0, 1.1, "sprint_cloth")
 				last_foot[i] = sim.tick
-			elif old.state == "sprint" and f.state in ["idle", "attack"]:
+			elif old.state == "sprint" and f.state in ["idle", "attack", "parry", "parry_success"]:
 				cue(sim, i, "step", 0.0, 0.96, "sprint_settle")
 				last_foot[i] = sim.tick
 			elif f.state == "idle" and moved:
 				var name: String = "walk" if (f.pos.x - old.pos.x) * f.facing > 0 else "backstep"
 				var clip: Dictionary = clips[f.character_id][name]
-				var frame: int = int(sim.tick / 60.0 * float(clip.fps)) % clip.frames.size()
+				var frame: int = int(sim.tick / 60.0 * float(clip.fps) * sim.combat_profile(f).walk_scale) % clip.frames.size()
 				var contact_frame: bool = frame == 0 or frame == int(clip.frames.size() / 2.0)
 				if (walk_frame[i] == -1 or (frame != walk_frame[i] and contact_frame)) and sim.tick - last_foot[i] >= 8:
 					cue(sim, i, "step", -1.5 if name == "backstep" else 0.0)

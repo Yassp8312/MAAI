@@ -9,6 +9,11 @@ const FrontEnd = preload("res://scripts/front_end.gd")
 const CharacterCatalog = preload("res://scripts/character_catalog.gd")
 const Courtyard = preload("res://scripts/courtyard.gd")
 const CombatAudio = preload("res://scripts/combat_audio.gd")
+const MenuMusic = preload("res://scripts/menu_music.gd")
+const BattleMusic = preload("res://scripts/battle_music.gd")
+var battle_music: Node
+var menu_music: Node
+var training_music: Node
 var combat_audio: Node2D
 var arena: Node2D
 var arena_button: Button
@@ -19,6 +24,8 @@ var settings = Settings.new()
 var controls = LocalInput.new(settings)
 var options: Control
 var pause_menu: PanelContainer
+var move_guide: Control
+var training_menu: Control
 var resume_button: Button
 var options_button: Button
 var pause_options_button: Button
@@ -36,22 +43,33 @@ var capture_frames: int = 0
 var practice: bool = false
 var demo: bool = false
 var demo_tick: int = 0
+var training = preload("res://scripts/training_dummy.gd").new()
+var training_button: Button
+var training_panel: PanelContainer
 const DEMO_STAGES = ["Guardia", "Avance", "Retroceso", "Estocada", "Corte ascendente", "Corte bajo", "Aguja aérea", "Corte aéreo", "Descendente", "Sprint y esquiva", "Derrota"]
 
 func _ready() -> void:
 	settings.load_settings()
 	settings.apply_all()
+	menu_music = MenuMusic.new()
+	add_child(menu_music)
+	battle_music = BattleMusic.new()
+	add_child(battle_music)
+	training_music = preload("res://scripts/training_music.gd").new()
+	add_child(training_music)
 	arena = Courtyard.new()
 	add_child(arena)
 	combat_audio = CombatAudio.new()
 	add_child(combat_audio)
+	combat_audio.cue_emitted.connect(battle_music.on_combat_cue)
+	combat_audio.cue_emitted.connect(training_music.on_combat_cue)
 	for i in range(2):
 		var view = FighterView.instantiate()
 		add_child(view)
 		views.append(view)
 	build_menu()
 	if play_intro_on_start and not "--demo" in OS.get_cmdline_user_args() and not "--capture" in OS.get_cmdline_user_args():
-		menu.play_prologue()
+		menu.play_boot()
 	if "--demo" in OS.get_cmdline_user_args():
 		start_demo()
 	if "--capture" in OS.get_cmdline_user_args():
@@ -72,12 +90,27 @@ func build_menu() -> void:
 	pause_menu = PauseMenu.new()
 	layer.add_child(pause_menu)
 	pause_menu.setup(self)
+	move_guide = preload("res://scripts/move_guide.gd").new()
+	layer.add_child(move_guide)
+	move_guide.setup(self)
 	resume_button = pause_menu.resume_button
 	pause_options_button = pause_menu.options_button
 	arena_button = pause_menu.arena_button
 	options = SettingsMenu.new()
 	layer.add_child(options)
 	options.setup(settings)
+	training_menu = preload("res://scripts/training_menu.gd").new()
+	layer.add_child(training_menu)
+	training_menu.setup(self)
+	training_panel = PanelContainer.new()
+	training_panel.position = Vector2(64, 220)
+	training_panel.add_theme_stylebox_override("panel", preload("res://scripts/interface_style.gd").box(Color("e8e3d8")))
+	layer.add_child(training_panel)
+	training_button = preload("res://scripts/interface_style.gd").button(training_panel, "Entrenamiento · F3")
+	training_button.custom_minimum_size = Vector2(300, 42)
+	training_button.add_theme_font_size_override("font_size", 17)
+	training_button.focus_mode = Control.FOCUS_NONE
+	training_button.pressed.connect(training_menu.open)
 	options.closed.connect(func():
 		controls.block_until_release()
 		if playing:
@@ -99,33 +132,48 @@ func open_options() -> void:
 	pause_menu.hide()
 	options.open()
 	options.device_slots = menu.device_slots.duplicate()
+	refresh()
 
 func open_pause() -> void:
+	training_menu.hide()
 	paused = true
 	frame_step = false
+	move_guide.hide()
 	if options.visible:
 		return
 	pause_menu.show()
 	resume_button.grab_focus()
+	refresh()
 
 func resume_game() -> void:
+	training_menu.hide()
+	move_guide.hide()
 	pause_menu.hide()
 	paused = false
 	frame_step = false
 	controls.block_until_release()
 	release_gui_focus()
+	refresh()
 
 func return_to_menu() -> void:
+	training_menu.hide()
+	move_guide.hide()
 	frame_step = false
 	menu.show_home()
 
 func return_to_selection() -> void:
+	training_menu.hide()
+	move_guide.hide()
 	frame_step = false
 	menu.open_selection("practice" if practice else "duel")
 
 func toggle_arena() -> void:
-	arena.laboratory = not arena.laboratory
-	arena_button.text = "Escenario: Laboratorio" if arena.laboratory else "Escenario: Patio al atardecer"
+	select_arena((arena.arena_index + 1) % arena.NAMES.size())
+
+func select_arena(index: int) -> void:
+	arena.set_arena(index)
+	arena_button.text = "Escenario: " + arena.title()
+	menu.arena_picker.select(index)
 	refresh()
 
 func release_gui_focus() -> void:
@@ -133,7 +181,9 @@ func release_gui_focus() -> void:
 	if focused != null:
 		focused.release_focus()
 
-func start_game() -> void:
+func start_game(next_mode: String = "duel") -> void:
+	training_menu.hide()
+	move_guide.hide()
 	menu.prologue.stop()
 	controls.set_devices(menu.device_slots)
 	for i in range(views.size()):
@@ -143,8 +193,14 @@ func start_game() -> void:
 	combat_audio.reset()
 	playing = true
 	paused = false
-	practice = false
-	demo = false
+	practice = next_mode in ["practice", "gallery"]
+	demo = next_mode == "gallery"
+	training = preload("res://scripts/training_dummy.gd").new()
+	if practice and not demo:
+		training.mode = "idle"
+		training.reset(sim)
+	if not practice:
+		battle_music.begin_match()
 	frame_step = false
 	controls.block_until_release()
 	menu.hide()
@@ -162,11 +218,17 @@ func select_character(player: int, id: String) -> void:
 			return
 
 func start_demo() -> void:
-	start_game()
+	start_game("gallery")
 	demo = true
 	practice = true
 	demo_tick = 0
 	sim.phase = "fight"
+
+func cycle_training() -> void:
+	training.cycle(sim)
+	combat_audio.reset()
+	controls.block_until_release()
+	refresh()
 
 func demo_inputs() -> Array:
 	var stage: int = int(demo_tick / 120.0) % DEMO_STAGES.size()
@@ -200,6 +262,16 @@ func _notification(what: int) -> void:
 		open_pause()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if training_menu.visible:
+		if event.is_pressed() and not event.is_echo() and ((event is InputEventKey and event.keycode == KEY_ESCAPE) or (event is InputEventJoypadButton and event.button_index == JOY_BUTTON_START)):
+			training_menu.close()
+			get_viewport().set_input_as_handled()
+		return
+	if move_guide.visible:
+		if event.is_pressed() and not event.is_echo() and ((event is InputEventKey and event.keycode == KEY_ESCAPE) or (event is InputEventJoypadButton and event.button_index == JOY_BUTTON_START)):
+			move_guide.close()
+			get_viewport().set_input_as_handled()
+		return
 	if options.visible:
 		return
 	if not event.is_pressed() or event.is_echo():
@@ -225,8 +297,16 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_F2:
 				paused = true
 				frame_step = true
+			KEY_F3:
+				if practice and not demo and KEY_F3 not in settings.values.keys[0] and KEY_F3 not in settings.values.keys[1]:
+					training_menu.open()
 			KEY_R:
-				if sim.phase == "match_over":
+				if practice and not demo:
+					if training.recording: training.finish_recording()
+					training.reset(sim)
+					combat_audio.reset()
+					controls.block_until_release()
+				elif sim.phase == "match_over":
 					start_game()
 				else:
 					sim.reset_round()
@@ -239,9 +319,12 @@ func _physics_process(_delta: float) -> void:
 			inputs = demo_inputs()
 		if practice:
 			sim.scores = [0, 0]
+			if not demo:
+				inputs[1] = training.sample(sim, inputs[1])
 		combat_audio.before_step(sim)
-		sim.step(inputs)
+		if not (practice and not demo) or training.should_step(sim): sim.step(inputs)
 		combat_audio.after_step(sim)
+		if practice and not demo: training.after_step(sim)
 		frame_step = false
 		for event in sim.events:
 			if event.kind == "resolution":
@@ -267,6 +350,18 @@ func log_resolution(detail: Dictionary) -> void:
 		file.store_line(JSON.stringify(detail))
 
 func refresh() -> void:
+	training_button.visible = playing and practice and not demo and not menu.visible and not paused and not options.visible and not pause_menu.visible
+	training_panel.visible = training_button.visible
+	if menu.visible and menu.screen in ["intro", "studio"]:
+		menu_music.silence()
+		battle_music.silence()
+		training_music.silence()
+	else:
+		menu_music.set_enabled(not playing or menu.visible)
+		battle_music.set_enabled(playing and not menu.visible and not practice and not demo)
+		training_music.set_enabled(playing and not menu.visible and practice and not demo)
+	training_music.quiet = paused
+	battle_music.quiet = paused or options.visible or pause_menu.visible
 	arena.present(sim, playing and not menu.visible, not paused and not options.visible and not pause_menu.visible)
 	combat_audio.present(playing and not menu.visible and not options.visible, not paused and not options.visible and not pause_menu.visible)
 	for i in range(views.size()):
@@ -305,11 +400,18 @@ func draw_courtyard_hud() -> void:
 			if round_index < sim.scores[i]:
 				draw_circle(point, 4, accent)
 	centered(69, "M A A I", 27, ink)
-	centered(99, "PATIO AL ATARDECER", 14, muted)
-	var mode_text: String = "PRÁCTICA LIBRE" if practice else "AL MEJOR DE %d" % best_of
+	centered(99, arena.title().to_upper(), 14, muted)
+	var mode_text: String = "ENTRENAMIENTO" if practice else "AL MEJOR DE %d" % best_of
 	if demo:
 		mode_text = "GALERÍA · " + DEMO_STAGES[int(maxi(0, demo_tick - 1) / 120.0) % DEMO_STAGES.size()]
 	centered(173, mode_text, 15, ink)
+	if practice and not demo:
+		centered(195, training.hint(sim), 16, ink)
+		if training.show_info:
+			draw_rect(Rect2(260, 276, 1080, 102), Color(0.94, 0.94, 0.92, 0.85))
+			centered(302, "Distancia %.0f · J1 %s · J2 %s" % [absf(sim.fighters[1].pos.x - sim.fighters[0].pos.x), training.phase_name(sim, sim.fighters[0]), training.phase_name(sim, sim.fighters[1])], 18, ink)
+			centered(332, "Golpes %d · Desvíos %d · Recibidos %d · Ejercicio %d" % [training.hits, training.deflections, training.losses, training.successes], 17, muted)
+			centered(365, training.feedback, 17, ink)
 	var message: String = ""
 	if paused and not pause_menu.visible and not options.visible:
 		message = "Pausa · Espacio para continuar"
@@ -317,6 +419,12 @@ func draw_courtyard_hud() -> void:
 		message = "Mide la distancia"
 	elif sim.phase == "round_over":
 		message = sim.result
+		if practice and not demo and not sim.last_resolution.is_empty():
+			for contact in sim.last_resolution.contacts:
+				if contact.get("defence_expired", false):
+					message = "Demasiado pronto · El bloqueo ya había terminado"
+	elif sim.tick - maxi(sim.fighters[0].parry_tick, sim.fighters[1].parry_tick) < 32:
+		message = "DESVÍO · Bloqueo preciso"
 	if not message.is_empty():
 		var width: float = font.get_string_size(message, HORIZONTAL_ALIGNMENT_LEFT, -1, 27).x + 64
 		draw_rect(Rect2((1600 - width) * 0.5, 207, width, 62), Color(0.94, 0.91, 0.82, 0.9))
@@ -377,13 +485,17 @@ func draw_laboratory() -> void:
 			var f: Dictionary = sim.fighters[i]
 			var info: String = "J%d  %s · tick de acción %d" % [i + 1, f.state, f.age]
 			if f.state == "attack":
-				info += " · " + sim.config.attacks[f.attack].display_name
+				info += " · " + sim.attack_data(f).display_name
 				info += " · alcance máx. %.0f" % sim.combat_profile(f).reaches[f.attack]
 			info += " · cuerpo %.0f" % sim.body(f).size.y
 			label_at(Vector2(64, 330 + i * 27), info, 16, Color("a4a49d"))
 		label_at(Vector2(64, 389), "Distancia %.0f px  |  simulación %d  |  invulnerable: %s / %s" % [sim.fighters[1].pos.x - sim.fighters[0].pos.x, sim.tick, sim.invulnerable(sim.fighters[0]), sim.invulnerable(sim.fighters[1])], 16, dim)
 		if not sim.last_resolution.is_empty():
 			label_at(Vector2(64, 416), "Último impacto: tick %d · doble KO %s" % [sim.last_resolution.tick, sim.last_resolution.double_ko], 16, dim)
+	if practice and not demo:
+		centered(745, training.hint(sim), 16, Color("ccc7bb"))
+	if sim.phase == "fight" and sim.tick - maxi(sim.fighters[0].parry_tick, sim.fighters[1].parry_tick) < 32:
+		centered(278, "DESVÍO · Bloqueo preciso", 26)
 	draw_line(Vector2(64, 772), Vector2(1536, 772), Color("333332"))
 	label_at(Vector2(65, 809), settings.control_hint(0), 17)
 	label_at(Vector2(65, 840), settings.control_hint(1), 17)

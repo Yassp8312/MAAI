@@ -1,0 +1,90 @@
+{
+	"checks": [
+		{
+			"check": "packaged startup opens studio",
+			"passed": true
+		},
+		{
+			"check": "capture studio",
+			"passed": true
+		},
+		{
+			"check": "studio advances automatically to prologue",
+			"passed": true
+		},
+		{
+			"check": "capture prologo",
+			"passed": true
+		},
+		{
+			"check": "capture menu",
+			"passed": true
+		},
+		{
+			"check": "menu decoder playing",
+			"passed": true
+		},
+		{
+			"check": "capture arena-tsukiyo",
+			"passed": true
+		},
+		{
+			"check": "dojo decoder playing for tsukiyo",
+			"passed": true
+		},
+		{
+			"check": "capture arena-ren",
+			"passed": true
+		},
+		{
+			"check": "dojo decoder playing for ren",
+			"passed": true
+		},
+		{
+			"check": "capture arena-daichi",
+			"passed": true
+		},
+		{
+			"check": "dojo decoder playing for daichi",
+			"passed": true
+		},
+		{
+			"check": "capture arena-nao",
+			"passed": true
+		},
+		{
+			"check": "dojo decoder playing for nao",
+			"passed": true
+		},
+		{
+			"check": "capture arena-sayo",
+			"passed": true
+		},
+		{
+			"check": "dojo decoder playing for sayo",
+			"passed": true
+		},
+		{
+			"check": "duel score enabled",
+			"passed": true
+		},
+		{
+			"check": "capture combate",
+			"passed": true
+		},
+		{
+			"check": "capture pausa",
+			"passed": true
+		},
+		{
+			"check": "capture opciones",
+			"passed": true
+		},
+		{
+			"check": "capture creditos",
+			"passed": true
+		}
+	],
+	"executable": "D:/Proyectos/Juegos/MAAI/Prototipo del juego/build/windows/MAAI.exe",
+	"failures": 0
+}

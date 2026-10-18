@@ -4,7 +4,7 @@ var settings: RefCounted
 var previous_pad: Array = [{}, {}]
 var blocked: Array = [true, true]
 var device_slots: Array = []
-const COMMANDS = ["jump", "sprint", "dodge", "attack0", "attack1", "attack2"]
+const COMMANDS = ["jump", "sprint", "dodge", "attack0", "attack1", "attack2", "parry"]
 
 func _init(preferences: RefCounted):
 	settings = preferences
@@ -22,9 +22,9 @@ func sample(player: int) -> Dictionary:
 	var axis: int = int(Input.is_action_pressed(prefix + "1")) - int(Input.is_action_pressed(prefix + "0"))
 	var pressed: Dictionary = {}
 	var any_held: bool = axis != 0
-	for i in range(8):
+	for i in range(Settings.ACTION_NAMES.size()):
 		any_held = any_held or Input.is_action_pressed(prefix + str(i))
-	for i in range(6):
+	for i in range(COMMANDS.size()):
 		pressed[COMMANDS[i]] = Input.is_action_just_pressed(prefix + str(i + 2))
 	var pads: Array = Input.get_connected_joypads()
 	var device: int = device_slots[player] if device_slots.size() == 2 else (pads[player] if pads.size() > player else -1)
@@ -36,7 +36,7 @@ func sample(player: int) -> Dictionary:
 		if pad_axis != 0:
 			axis = pad_axis
 		var buttons: Array = settings.values.pads[player]
-		for i in range(6):
+		for i in range(COMMANDS.size()):
 			var held: bool = Input.is_joy_button_pressed(device, buttons[i])
 			any_held = any_held or held
 			pressed[COMMANDS[i]] = pressed[COMMANDS[i]] or (held and not previous_pad[player].get(COMMANDS[i], false))
@@ -48,7 +48,7 @@ func sample(player: int) -> Dictionary:
 			blocked[player] = false
 		return {"axis": 0, "action": ""}
 	# Explicit tie-break for simultaneous commands. No repeated held attacks.
-	for command in ["attack0", "attack1", "attack2", "dodge", "sprint", "jump"]:
+	for command in ["parry", "attack0", "attack1", "attack2", "dodge", "sprint", "jump"]:
 		if pressed[command]:
 			return {"axis": axis, "action": command}
 	return {"axis": axis, "action": ""}

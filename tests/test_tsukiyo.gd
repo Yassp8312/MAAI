@@ -18,13 +18,13 @@ func check(condition: bool, description: String) -> void:
 func run() -> void:
 	var animation := TsukiyoAnimation.new()
 	var simulation := Simulation.new()
-	check(animation.sheets.size() == 6, "Six Tsukiyo sheets loaded")
+	check(animation.sheets.size() == 7, "Six Tsukiyo sheets plus defence loaded")
 	for id in animation.sheets:
-		check(animation.sheets[id].size() == (6 if id == "sprint" else 8), "All separate cels in " + id)
+		check(animation.sheets[id].size() == (6 if id in ["sprint", "defence"] else 8), "All separate cels in " + id)
 		for cel in animation.sheets[id]:
 			check(cel.mesh.get_surface_count() == 1 and cel.texture != null, "Cel has valid cached render geometry")
 	for i in range(6):
-		var attack: Resource = simulation.config.attacks[i]
+		var attack: Resource = simulation.attack_data(simulation.fighters[0], i)
 		var fighter: Dictionary = simulation.fighters[0]
 		fighter.state = "attack"
 		fighter.attack = i

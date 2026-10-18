@@ -1,16 +1,37 @@
-# MAAI · Hoja de ruta hacia un MVP competitivo
+# MAAI · Cierre del MVP local y desarrollo posterior
 
-Actualizada el 17 de octubre de 2026. Sustituye la lista anterior. Este documento ordena trabajo pendiente; las reglas propuestas no se consideran implementadas ni aprobadas por aparecer aquí.
+Actualizada el 18 de octubre de 2026. Sustituye la lista anterior. Este documento ordena trabajo pendiente; las reglas propuestas no se consideran implementadas ni aprobadas por aparecer aquí.
 
 ## Objetivo y estado real
 
-Jorge quiere revisar animaciones, incorporar bloqueo y parry con choques de armas propios, añadir música al juego, llevar el entorno al blanco y negro, disponer de entrenamiento y jugar por LAN. La aspiración es que el juego sea divertido y pueda sostener competición además de destacar por su arte.
+**Cambio de alcance acordado el 18 de octubre:** el MVP se cierra como experiencia local. Entrenamiento funcional, tres arenas monocromas, entrada tipográfica de Yassper Design, créditos e icono de MAAI ya están integrados. El entrenamiento utiliza Ink Duel · Dojo, adaptada de Banda1 sin nuevas descargas. La LAN pasa expresamente a después del MVP, junto con la documentación profesional y el pulido más profundo de combate y animaciones. Las listas detalladas de abajo conservan ideas futuras, no nuevos requisitos para este cierre.
 
-Disponible: cinco personajes con primera animación y alcances propios, esquiva con cambio de zona vulnerable, muerte aérea con aterrizaje, duelo local, prólogo con voz y música elegida, presentación, selección, resultados, pausa y opciones coherentes, efectos por personaje y patio provisional. La práctica actual no tiene rival automático. La simulación funciona a 60 ticks por segundo y está separada del dibujo.
+### Para cerrar la entrega
 
-Falta: defensa con bloqueo/parry, poses y contactos de defensa, técnicas realmente diferenciadas, música fuera del prólogo, escenario monocromo, entrenamiento con órdenes, LAN, validación humana de diversión/equilibrio y distribución probada en otras computadoras. La separación del dibujo no demuestra determinismo entre equipos ni una arquitectura de red terminada.
+- [x] Entrenamiento con conductas, distancia, secuencias, grabación temporal y ejercicios de parry/castigo.
+- [x] Tres arenas monocromas seleccionables, con límites comunes y centro claro.
+- [x] Créditos agrupados por persona, colaboradores anónimos, fuentes y herramientas; correo de feedback.
+- [x] Entrada de estudio antes del prólogo e iconos SVG/PNG/ICO de MAAI.
+- [x] Adaptar e integrar música de entrenamiento reutilizando Banda1; valoración musical final con Jorge.
+- [ ] Revisión de Jorge del entrenamiento, las arenas, el nombre del estudio y los créditos.
+- [x] Exportar Windows con plantillas oficiales y rcedit; revisar metadatos, entrada, prólogo, personajes, arenas, música y menús fuera del editor. Paquete en `build/windows`; pruebas y capturas en `art/reviews/export`.
+- [ ] Una prueba completa de instalación, teclado y mandos en otro equipo. No sustituir esta validación por las pruebas automáticas.
 
-## Orden recomendado
+### Después del MVP
+
+1. Reconciliar y profesionalizar GDD, narrativa, arte, audio y documentación técnica con lo realmente implementado.
+2. Pruebas de combate, diversión y diferencias del elenco; pulir animaciones y legibilidad a partir de esas partidas.
+3. Preparar y construir LAN, con sincronización y pruebas reales en dos equipos.
+
+La aspiración posterior sigue siendo un juego divertido que pueda sostener competición además de destacar por su arte. La defensa está implementada y Jorge pide mantenerla como está por ahora.
+
+Disponible: cinco personajes con primera animación, alcances, tiempos y movilidad propios; esquiva con cambio de zona vulnerable, muerte aérea con aterrizaje, duelo local, prólogo con voz y música elegida, presentación, selección, resultados, pausa y opciones coherentes, efectos por personaje y tres arenas de tinta. El entrenamiento funciona sin IA competitiva. La simulación funciona a 60 ticks por segundo y está separada del dibujo.
+
+Primera defensa implementada: bloqueo preciso/parry al pulsar cerca del contacto, sin guardia mantenida; poses propias de defensa y rechazo para cinco personajes, sonido metálico y rival repetidor en práctica. Música integrada en menús y duelos. Ver `COMBATE_DEFENSA.md` para reglas y controles actuales.
+
+Falta valorar jugando las primeras técnicas diferenciadas, ampliar entrenamiento si esas pruebas lo requieren y verificar distribución. LAN, equilibrio competitivo y pulido profundo se mantienen como trabajo posterior. La separación del dibujo no demuestra determinismo entre equipos ni una arquitectura de red terminada.
+
+## Referencia de trabajo posterior
 
 | Etapa | Trabajo | Criterio para avanzar |
 | --- | --- | --- |
@@ -26,8 +47,8 @@ La prueba monocroma puede avanzar junto a la defensa. Preparar registro de entra
 
 ## 1. Bloqueo y parry
 
-- [ ] Añadir defensa reasignable para ambos jugadores, teclado y mando. Actualizar HUD, captura de controles e instrucciones; migrar preferencias sin borrar asignaciones existentes.
-- [ ] Probar esta hipótesis: mantener el control para bloquear; pulsarlo cerca del contacto para desviar. No es una regla definitiva; separar acciones sigue siendo una alternativa.
+- [x] Añadir defensa reasignable para ambos jugadores, teclado y mando, HUD y migración de preferencias anteriores.
+- [x] Regla solicitada por Jorge: el bloqueo solo funciona al pulsar cerca del impacto. No hay protección por mantener el botón. Primera ventana: 9 ticks (0,15 s), pendiente de valoración jugando.
 - [ ] Definir dirección de guardia, cobertura alta/baja, ataques aéreos y defensa en el aire. Las excepciones deben ser visibles y enseñables.
 - [ ] Decidir el coste de defender: movilidad, recuperación, espacio o resistencia de guardia. No introducir automáticamente una barra de postura si una solución más simple funciona.
 - [ ] Probar ventana de parry, recuperación al fallar y respuesta al uso repetido. El botón no debería poder machacarse sin riesgo.
@@ -39,7 +60,7 @@ Aceptación: bloquear no resuelve todo, cada defensa tiene contrajuego y ambos j
 
 ## 2. Animaciones y contacto
 
-- [ ] Entrada/salida de guardia, bloqueo recibido, desvío exitoso, arma rechazada y recuperación del fallo.
+- [x] Primera secuencia propia de entrada, desvío, arma rechazada y recuperación para los cinco personajes. Pendiente pulir transiciones/contactos con pruebas jugadas.
 - [ ] Revisar preparación, recorrido del arma, contacto y recuperación junto a las zonas de colisión.
 - [ ] Corregir pies que deslizan, cambios de tamaño, continuidad de manos/armas y transiciones de sprint, salto y caída según la revisión de Jorge.
 - [ ] Completar retrocesos propios de Tsukiyo y Sayo.
@@ -65,6 +86,8 @@ Aceptación: reconocer pies, siluetas, armas y lado del jugador a 960 × 540 sin
 
 ## 4. Sonido de defensa y música
 
+Primera integración para valorar: **Banda1 / Ink Duel** acompaña presentación, menú, opciones y selección. **Banda sonora2** y **Banda sonora 3** alternan entre partidas/revanchas, continúan entre rondas y bajan durante la pausa y brevemente ante efectos de combate. Pendiente la valoración auditiva de Jorge. La música de entrenamiento se deja para cuando se revise ese modo. Ver `art/music/README.md`.
+
 - [ ] Eventos distintos para ataque al aire, bloqueo, parry, impacto corporal y choque entre ataques o ruptura de guardia si se incorporan esas reglas.
 - [ ] Materiales coherentes: hoja contra hoja, hoja contra tessen y metal/madera de la yari según la zona representada. No reutilizar el golpe corporal para desviar un arma.
 - [ ] Parry breve, identificable y sincronizado con el contacto real, sin repetición por cada tick de colisión.
@@ -77,13 +100,13 @@ Aceptación: reconocer pies, siluetas, armas y lado del jugador a 960 × 540 sin
 
 ## 5. Identidad jugable, diversión y equilibrio
 
-Hoy los alcances cambian, pero los tiempos básicos de ataque y movimiento siguen siendo comunes: aún no son cinco kits terminados.
+Primera diferenciación implementada: tiempos propios para las treinta técnicas, movilidad por personaje, entradas de Nao, avances de Ren, retirada de Sayo y recuperación larga de Daichi. Tsukiyo conserva precisión y recuperación ágil. Dibujos y sonidos siguen las fases de cada técnica. Ver `TECNICAS_PERSONAJES.md`. Falta validar las identidades y el equilibrio jugando; no son kits definitivos.
 
 - [x] Permitir iniciar cualquiera de los tres ataques durante el sprint. Implementado: interrumpe el desplazamiento, mantiene la orientación hacia el rival y conserva la preparación/recuperación normal del ataque. Incluye apoyo sonoro al detenerse. Revisar su sensación en partidas.
 
-- [ ] Distancia preferida, fortalezas, debilidades y formas de aproximación de cada personaje.
-- [ ] Una función por ataque: alcance, velocidad, cobertura o castigo. Evitar técnicas redundantes o superiores en todo.
-- [ ] Oportunidades reales de acercarse con armas cortas y compromisos castigables para las largas.
+- [x] Primera propuesta de distancia preferida, fortalezas, debilidades y formas de aproximación de cada personaje.
+- [x] Primera función por ataque: alcance, velocidad, cobertura o castigo, explicada en la guía. Falta detectar redundancias y opciones dominantes jugando.
+- [x] Entrada de Nao y recuperación castigable de Daichi, con pruebas de castigo e intercepción en ambos lados. Extender validación humana al resto de enfrentamientos.
 - [ ] Contrajuego de salto, sprint, esquiva, guardia y parry; reglas claras de cancelación y recuperación.
 - [ ] Evaluar si hace falta una respuesta adicional al bloqueo —finta, ruptura u otra— tras observar el problema. No añadir agarres o medidores solo para acumular sistemas.
 - [ ] Resolver estancamientos, empates y final de ronda si nadie ataca. Un temporizador es una opción por evaluar.
@@ -95,14 +118,14 @@ Preguntas de aceptación: ¿entiendo por qué perdí?, ¿tenía respuesta?, ¿to
 
 ## 6. Entrenamiento y aprendizaje
 
-- [ ] Primero: rival quieto o repitiendo un ataque para desarrollar la defensa.
-- [ ] Después: órdenes de bloquear, desviar, esquivar, saltar y responder a una situación.
-- [ ] Reinicio instantáneo y selección de posiciones/distancia con ambos personajes elegibles.
-- [ ] Grabar/reproducir una secuencia corta del rival cuando la repetición simple se quede corta.
-- [ ] Información opcional de entradas, distancia, preparación/actividad/recuperación y cajas de contacto.
+- [x] Rival que repite uno de los tres ataques de suelo; ajustes con botón, pausa o F3, R para recolocar. Control libre sigue disponible.
+- [x] Conductas de parry, esquiva, salto, quieto y secuencia de ataques. No se añade guardia mantenida.
+- [x] Reinicio instantáneo y cuatro distancias con ambos personajes elegibles.
+- [x] Grabar/reproducir hasta cinco segundos de entradas de J2 durante la sesión.
+- [x] Información opcional de distancia, preparación/actividad/recuperación, resultados y cajas con F1. Historial de entradas queda para después.
 - [ ] Explicación de defensa temprana, tardía o incorrecta por dirección, diferenciada de un ataque que nunca alcanzó. Basarla en datos reales.
 - [ ] Tutorial breve y saltable con ejercicios de alcance, movimiento, esquiva, guardia y parry.
-- [ ] Lista de movimientos accesible desde práctica/pausa.
+- [x] Lista de movimientos accesible desde la pausa de práctica y duelo, para ambos personajes y con controles actuales.
 
 No requiere una IA competitiva completa; esa IA se considera después según su utilidad.
 
@@ -150,8 +173,8 @@ La profundidad puede venir de distancia, compromiso, lectura y adaptación; no e
 
 **MVP local:** cinco personajes con ataques comprensibles y opciones viables, guardia/parry y esquiva coherentes, arena monocroma legible, música/efectos integrados, entrenamiento básico, explicación de reglas, mandos y opciones funcionales, versión exportada y pruebas con personas. Puede mantener animación provisional donde no perjudique la lectura.
 
-**MVP con LAN:** lo anterior más sala, sincronización comprobada en dos equipos, resultados consistentes, revancha y manejo de desconexión/pausa. Por el interés de Jorge, LAN forma parte del objetivo; se separa en una entrega para verificarla por sí misma.
+**Ampliación posterior con LAN:** lo anterior más sala, sincronización comprobada en dos equipos, resultados consistentes, revancha y manejo de desconexión/pausa. Por decisión de Jorge, ya no condiciona el cierre del MVP local.
 
-Siguiente trabajo recomendado: especificar y prototipar defensa con un ataque repetible. Esta lista propone el comportamiento inicial; no fija ventanas, costes ni recompensas definitivas.
+Siguiente trabajo: revisar la adaptación musical y esta compilación con Jorge, y probarla con dos mandos en otro equipo. Después, seguir el orden de documentación, pulido y LAN establecido arriba. Mantener el parry como está por petición de Jorge.
 
 [Un café para Jorge](https://jorge-coffee.onrender.com/)

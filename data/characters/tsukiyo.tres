@@ -6,3 +6,9 @@
 script = ExtResource("1")
 reaches = PackedFloat32Array(245, 160, 240, 190, 150, 160)
 dodge_height = 130.0
+startup_ticks = PackedInt32Array(9, 8, 14, 8, 10, 13)
+active_ticks = PackedInt32Array(4, 4, 5, 4, 5, 5)
+recovery_ticks = PackedInt32Array(11, 15, 18, 12, 15, 18)
+move_names = PackedStringArray("Estocada medida", "Filo ascendente", "Corte al paso", "Aguja aérea", "Arco en el aire", "Caída del filo")
+move_roles = PackedStringArray("Mide la distancia y castiga un fallo sin avanzar.", "Intercepta cerca y hacia arriba; pierde alcance frontal.", "Cubre abajo a distancia; exige más preparación.", "Punta rápida al saltar, con alcance moderado.", "Recorre varias alturas; compromete más que la aguja.", "Amenaza debajo durante el salto; tarda más en salir.")
+style_note = "Precisión a media distancia. Recupera pronto la estocada y elige cuándo comprometer el filo."

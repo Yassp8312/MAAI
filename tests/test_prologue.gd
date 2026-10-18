@@ -31,7 +31,9 @@ func run() -> void:
 	var menu = game.menu
 	var intro = menu.prologue
 	intro.set_process(false)
-	check(menu.screen == "intro" and intro.active and not game.playing, "Normal startup opens the prologue before presentation")
+	check(menu.screen == "studio" and menu.studio.active and not game.playing, "Normal startup opens the studio first")
+	menu.studio.finish()
+	check(menu.screen == "intro" and intro.active and not game.playing, "Studio continues into the existing prologue")
 	check(intro.duration() > 46 and intro.duration() < 49, "Duration includes the complete narration and title hold")
 	check(AudioServer.get_bus_index("IntroVO") >= 0 and intro.voice.bus == "IntroVO", "Narration has its own volume bus")
 	check(intro.music.stream != null and intro.music.bus == "Music" and not intro.music.stream.loop, "Selected soundtrack is routed independently and does not loop")

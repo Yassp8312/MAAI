@@ -1,14 +1,26 @@
 # MAAI · Laboratorio de combate 0.1
 
-Base jugable local, creada el 15 de octubre de 2026 para probar distancia, compromiso y justicia. Incluye una primera animación de Tsukiyo, Ren, Daichi, Nao y Sayo, elegibles por separado para ambos jugadores. **Los dibujos siguen en revisión y los tiempos de las técnicas aún comparten la base del laboratorio. Cada personaje ya tiene alcances propios y una zona vulnerable que baja al esquivar; no son los kits definitivos.** La representación geométrica original sigue disponible desactivando `use_tsukiyo` en la escena de vista (nombre conservado por compatibilidad; controla todo el arte de personajes).
+Base jugable local, creada el 15 de octubre de 2026 para probar distancia, compromiso y justicia. Incluye una primera animación de Tsukiyo, Ren, Daichi, Nao y Sayo, elegibles por separado para ambos jugadores. **Cada personaje tiene alcances, tiempos y movilidad propios: primera versión de sus técnicas, pendiente de equilibrio y pulido visual jugando.** La zona vulnerable baja al esquivar. La representación geométrica original sigue disponible desactivando `use_tsukiyo` en la escena de vista (nombre conservado por compatibilidad; controla todo el arte de personajes).
 
 ## Jugar
 
 En esta computadora, haz doble clic en **Jugar.bat**. Usa **Abrir_en_Godot.bat** para editar. También puedes importar `project.godot` en Godot 4.2.1 y pulsar F5. Los lanzadores usan la instalación existente en `D:\Trabajo\Programas\Para juegos\godot`; para otra computadora, importa el proyecto desde su propio Godot.
 
-El juego abre con un **prólogo ilustrado con narración**, antes de la presentación. **Espacio / A** pausa; **Esc / B** salta; **S / Y** alterna los subtítulos. Puedes repetirlo desde **Volver a ver el prólogo** en el menú y ajustar su voz en **Sonido → Narración**. [Montaje y música del prólogo](art/intro/README.md).
+El juego abre con una entrada breve y saltable de **Yassper Design**, seguida del **prólogo ilustrado con narración**, antes de la presentación. En el prólogo, **Espacio / A** pausa; **Esc / B** salta; **S / Y** alterna los subtítulos. Puedes repetirlo desde **Volver a ver el prólogo** en el menú y ajustar su voz en **Sonido → Narración**. [Montaje y música del prólogo](art/intro/README.md).
 
-Pulsa una tecla en la presentación y elige **Duelo local**. Cada jugador elige y confirma su personaje; al estar ambos listos se presenta el enfrentamiento y comienza el duelo. **Tab / Y** alterna mejor de 3 o de 5. Práctica libre permite repetir duelos sin acumular puntos. Necesitas dos personas para evaluar el combate: no hay IA.
+La presentación y los menús incorporan **Banda1 / Ink Duel**, aportada por Jorge, como primera prueba musical. Continúa entre menú, opciones y selección, repite con fundido y se desvanece al iniciar el duelo. Se controla desde **Sonido → Música**. [Preparación y comportamiento](art/music/README.md).
+
+Los duelos alternan **Banda sonora2** y **Banda sonora 3** por partida o revancha. La pista continúa entre rondas, baja durante la pausa y deja espacio a armas e impactos. Entrenamiento utiliza **Ink Duel · Dojo**, una adaptación más pausada de Banda1, sin reinicios al repetir ejercicios. La galería mantiene ambiente y efectos. Todas las pistas respetan **Sonido → Música**.
+
+Pulsa una tecla en la presentación y elige **Duelo local**. Cada jugador elige y confirma su personaje; al estar ambos listos se presenta el enfrentamiento y comienza el duelo. **Tab / Y** alterna mejor de 3 o de 5. La selección también permite elegir la arena.
+
+**Entrenamiento** ofrece rival quieto o con acciones repetidas, respuesta de parry, secuencias, distancias configurables, grabación temporal de J2 y ejercicios guiados. **F3**, el botón visible o **Pausa → Ajustar entrenamiento** abre sus opciones; **R** reinicia. [Guía completa](ENTRENAMIENTO.md). No hay IA competitiva.
+
+**Créditos** reúne el equipo, roles, colaboradores anónimos, fuentes de efectos, herramientas de IA y contacto para feedback. [Identidad de estudio e icono de aplicación](art/branding/README.md).
+
+**Bloqueo preciso / parry:** pulsa cerca del impacto; mantener no protege. Incluye poses propias de defensa y arma rechazada para los cinco personajes, choque metálico y una oportunidad de respuesta al acertar. **E / J**, o **R3** en mando, reasignables. [Reglas, entrenamiento, animaciones y ajustes de ritmo](COMBATE_DEFENSA.md).
+
+**Esc / Start → Técnicas de los personajes** muestra los seis ataques de cada luchador elegido y sus botones actuales. Nao entra con un paso de dagas, Ren avanza con sus cortes, Sayo cede espacio y Tsukiyo recupera pronto su estocada. Daichi conserva el alcance largo, con mayor recuperación al fallar. [Funciones, tiempos y prueba Nao–Daichi](TECNICAS_PERSONAJES.md). El parry mantiene sus reglas.
 
 Para ver las animaciones sin manejar ambos jugadores, entra en **Galería de movimientos**, elige el personaje que quieres revisar en Jugador 1 y confirma ambos lados. **Ver_Tsukiyo.bat** sigue abriendo la demostración de Tsukiyo. El recorrido incluye guardia, pasos, seis ataques, sprint, esquiva y derrota; Esc abre la pausa. Ren, Daichi y Nao tienen 44 dibujos propios cada uno; Sayo tiene 40; Tsukiyo conserva su sprint delicado de seis poses. [Inventario, referencias y estado del elenco](art/characters/README.md). La sincronización temporal está implementada; el ajuste exacto de cada arma y las colisiones sigue pendiente.
 
@@ -19,6 +31,7 @@ Para ver las animaciones sin manejar ambos jugadores, entra en **Galería de mov
 | Sprint | S + dirección | Flecha abajo + dirección | RB + dirección |
 | Esquiva | Q | K | LB |
 | Ataques 1 / 2 / 3 | F / G / H | U / I / O | X / Y / B |
+| Bloqueo preciso / parry | E | J | R3 / pulsar stick derecho |
 
 Sprint sin dirección avanza hacia el rival. Los tres ataques tienen variantes aéreas. El sprint y el salto mantienen la dirección inicial. Los mandos se asignan por el orden de dispositivos conectados; las letras corresponden a disposición Xbox. El soporte está implementado, pendiente de comprobar con dos mandos físicos. Algunos teclados limitan pulsaciones simultáneas; para pruebas competitivas usaremos dos mandos.
 
@@ -30,13 +43,13 @@ La pausa permite volver a elegir personajes. La pantalla de resultado ofrece rev
 
 ## Opciones
 
-El duelo se desarrolla en el **Patio al atardecer**, con fondo de tinta, vegetación animada y sombras de contacto. **Esc / Start → Escenario** permite alternar con el laboratorio negro sin reiniciar la ronda. El viento provisional respeta el volumen **Ambiente** y el silencio general. [Arte e integración del patio](art/environments/courtyard/README.md).
+Hay tres arenas monocromas: **Patio de tinta**, **Santuario del bambú** y **Orilla del silencio**, además del laboratorio. Se eligen antes del encuentro o con **Esc / Start → Escenario** sin reiniciar la ronda. Comparten suelo y límites de combate; conservan sombras y animación ambiental. El viento respeta **Ambiente** y el silencio general. [Arte e integración](art/environments/monochrome/README.md).
 
 Entra en **Opciones** desde el menú principal o pulsa **Esc / Start** durante el duelo para abrir la pausa. Volver de las opciones conserva la ronda y el marcador; pulsa **Continuar** para reanudar.
 
 - **Pantalla:** resolución de ventana entre 960 × 540 y 3840 × 2160, pantalla completa y VSync. La ventana se limita al espacio disponible del monitor; pantalla completa usa su resolución nativa. El encuadre conserva la proporción 16:9. Al guardar un cambio de pantalla hay 12 segundos para confirmarlo; Esc, Revertir o agotar el tiempo recuperan la pantalla anterior.
 - **Sonido:** volumen general, música, efectos, ambiente y narración, además de silenciar todo. Cada canal tiene un tono de prueba. Los niveles se preescuchan y Cancelar recupera los anteriores. El prólogo incluye la voz y **Ink Resolve A**, con volumen independiente para cada pista. El combate incluye pasos, ropa, armas, impactos y caídas propios de los cinco personajes, con variantes y control desde **Efectos**. [Perfiles sonoros y créditos CC0](art/audio/combat/README.md).
-- **Controles:** selecciona jugador y pulsa la casilla que quieras cambiar. Admite teclas físicas y los seis botones de acción de cada mando; stick y cruceta mantienen el movimiento. Rechaza teclas duplicadas entre jugadores y botones duplicados dentro del mismo mando. Esc cancela una asignación. Esc, Espacio, R, F1, F2, Tab, Enter y las teclas modificadoras están reservadas. Start queda reservado para pausa. Las indicaciones del HUD se actualizan con el teclado elegido.
+- **Controles:** selecciona jugador y pulsa la casilla que quieras cambiar. Admite teclas físicas y los siete botones de acción de cada mando; stick y cruceta mantienen el movimiento. Rechaza teclas duplicadas entre jugadores y botones duplicados dentro del mismo mando. Esc cancela una asignación. Esc, Espacio, R, F1, F2, Tab, Enter y las teclas modificadoras están reservadas. Start queda reservado para pausa. Las indicaciones del HUD se actualizan con el teclado elegido.
 
 **Guardar y volver** conserva todas las secciones entre ejecuciones; **Cancelar** descarta lo pendiente. **Restaurar esta sección** devuelve sus valores iniciales (en Controles, los de ambos jugadores) y requiere guardar. Al volver al duelo, suelta los controles antes de actuar para evitar trasladar pulsaciones del menú a la partida.
 
@@ -126,7 +139,7 @@ La separación evita reescribir el combate al cambiar dibujos; **la integración
 
 ## Siguiente iteración
 
-[Hoja de ruta actualizada y criterios de revisión](PROXIMOS_PASOS.md): bloqueo/parry y entrenamiento mínimo, escenario monocromo, animaciones y técnicas por personaje, música del juego, pruebas humanas y LAN. Se distinguen las entregas local y LAN y la preparación posterior para competición. Las reglas concretas de defensa siguen siendo propuestas por probar. Online/rollback necesita estudio técnico y pruebas propias: este prototipo no lo implementa ni demuestra determinismo entre plataformas.
+[Hoja de ruta actualizada y criterios de revisión](PROXIMOS_PASOS.md): MVP local con entrenamiento, arenas monocromas, créditos, identidad y música integrada. Compilación Windows en `build/windows/MAAI.exe`, junto a `MAAI.pck`; se abre sin el editor. [Preparación y verificación](COMPILACION.md). Pendientes: revisión de Jorge y prueba con mandos en otro equipo. Después: documentación profesional, pruebas de combate, pulido de animaciones/diversión y LAN. El parry se conserva por petición de Jorge. Online/rollback necesita estudio técnico y pruebas propias: este prototipo no lo implementa ni demuestra determinismo entre plataformas.
 
 Pendientes: pulir continuidad e intermedios del elenco, retroceso propio de Tsukiyo y Sayo, kits propios y ajuste preciso de trayectorias, balance humano, pruebas con mandos físicos, cámara final, hitboxes anatómicas y de armas, voces/sonido/música, escenarios y arte definitivos, online y exportación distribuible. El enlace de café se encuentra discretamente en el menú.
 

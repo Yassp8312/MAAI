@@ -20,7 +20,7 @@ func run() -> void:
 	var previous_texture: Texture2D
 	for entry in roster:
 		var animation := CharacterAnimation.new(entry.id)
-		check(animation.clips.size() == 14, entry.id + " has all combat clips")
+		check(animation.clips.size() == 17, entry.id + " has all combat and defence clips")
 		var twin := CharacterAnimation.new(entry.id)
 		check(twin.sheets.guard[0].mesh == animation.sheets.guard[0].mesh, "Same character shares cached meshes")
 		check(animation.sheets.guard[0].texture != previous_texture, "Different characters never reuse another character's texture")
@@ -32,6 +32,7 @@ func run() -> void:
 		var simulation := Simulation.new()
 		simulation.phase = "fight"
 		for player in range(2):
+			simulation.set_character(player, entry.id)
 			for forward in [true, false]:
 				simulation.reset_round()
 				simulation.phase = "fight"
@@ -44,8 +45,8 @@ func run() -> void:
 					var pose: Dictionary = animation.pose(simulation, player)
 					check(pose.clip == ("walk" if forward else "backstep"), "Movement selects forward/backward animation on either side")
 					check(simulation.fighters[player].facing == facing, "Retreat keeps facing the opponent")
-				check(is_equal_approx(absf(simulation.fighters[player].pos.x - origin), 12 * simulation.config.walk_speed), "New footwork preserves movement distance")
-			for state in ["idle", "sprint", "dodge", "dead"]:
+				check(absf(absf(simulation.fighters[player].pos.x - origin) - 12 * simulation.walk_speed(simulation.fighters[player])) < 0.01, "Footwork follows character-specific movement distance within float32 precision")
+			for state in ["idle", "sprint", "dodge", "dead", "parry", "parry_success", "parried"]:
 				simulation.fighters[player].state = state
 				for age in range(30):
 					simulation.fighters[player].age = age
@@ -56,7 +57,7 @@ func run() -> void:
 					check(pose.mesh.get_surface_count() == 1, "State produces valid geometry: " + state)
 					check(before == JSON.stringify(simulation.fighters), "Art cannot alter simulation")
 			for attack_index in range(6):
-				var attack: Resource = simulation.config.attacks[attack_index]
+				var attack: Resource = simulation.attack_data(simulation.fighters[player], attack_index)
 				simulation.fighters[player].state = "attack"
 				simulation.fighters[player].attack = attack_index
 				for age in range(attack.startup + attack.active + attack.finish):

@@ -18,6 +18,7 @@ var target_wins: int = 2
 var result: String = ""
 var events: Array = []
 var last_resolution: Dictionary = {}
+var attack_cache: Dictionary = {}
 
 func _init(settings: Resource = null):
 	config = settings if settings != null else load("res://data/combat.tres")
@@ -38,7 +39,9 @@ func reset_round() -> void:
 			"vx": 0.0, "vy": 0.0, "facing": 1 if i == 0 else -1,
 			"state": "idle", "age": 0, "attack": -1, "attack_dir": 1,
 			"dash_dir": 1, "air_attacked": false, "buffer": "", "buffer_until": -1,
-			"character_id": character_ids[i], "death_ground_age": 0})
+			"character_id": character_ids[i], "death_ground_age": 0,
+			"parry_dir": 1 if i == 0 else -1, "parry_point": Vector2.ZERO,
+			"parry_tick": -100})
 	phase = "countdown"
 	phase_tick = 0
 	result = ""
@@ -56,6 +59,37 @@ func set_character(player: int, id: String) -> void:
 func combat_profile(f: Dictionary) -> Resource:
 	return CHARACTER_PROFILES[f.character_id]
 
+func attack_data(f: Dictionary, index: int = -1) -> Resource:
+	var id: String = f.character_id
+	if not attack_cache.has(id):
+		var profile: Resource = combat_profile(f)
+		var moves: Array = []
+		for i in range(config.attacks.size()):
+			var move: Resource = config.attacks[i].duplicate()
+			move.startup = profile.startup_ticks[i]
+			move.active = profile.active_ticks[i]
+			move.finish = profile.recovery_ticks[i]
+			move.advance = profile.advances[i]
+			move.display_name = profile.move_names[i]
+			move.role = profile.move_roles[i]
+			moves.append(move)
+		attack_cache[id] = moves
+	return attack_cache[id][f.attack if index < 0 else index]
+
+func walk_speed(f: Dictionary) -> float:
+	return config.walk_speed * combat_profile(f).walk_scale
+
+func sprint_distance(f: Dictionary) -> float:
+	return config.sprint_distance * combat_profile(f).sprint_scale
+
+func attack_progress(move: Resource, age: int) -> float:
+	var t: float = clampf(float(age - move.advance_delay) / maxi(1, move.startup - move.advance_delay), 0, 1)
+	return t * t * (3.0 - 2.0 * t)
+
+func attack_step(f: Dictionary) -> float:
+	var move: Resource = attack_data(f)
+	return move.advance * (attack_progress(move, f.age) - attack_progress(move, f.age - 1)) * f.attack_dir
+
 func crouching(f: Dictionary) -> bool:
 	return f.state == "dodge" and f.age >= config.dodge_start and f.age < config.dodge_end
 
@@ -69,14 +103,20 @@ func body(f: Dictionary, previous: bool = false, standing: bool = false) -> Rect
 func invulnerable(f: Dictionary) -> bool:
 	return f.state == "dodge" and f.age >= config.dodge_start and f.age < config.dodge_end
 
+func parry_ready(f: Dictionary) -> bool:
+	return f.state == "parry" and f.age < config.parry_window and not airborne(f)
+
+func can_parry(defender: Dictionary, attacker: Dictionary) -> bool:
+	return parry_ready(defender) and (attacker.pos.x - defender.pos.x) * defender.parry_dir > 0.0
+
 func active(f: Dictionary) -> bool:
 	if f.state != "attack":
 		return false
-	var move: Resource = config.attacks[f.attack]
+	var move: Resource = attack_data(f)
 	return f.age >= move.startup and f.age < move.startup + move.active
 
 func blade(f: Dictionary, old: bool = false) -> Rect2:
-	var move: Resource = config.attacks[f.attack]
+	var move: Resource = attack_data(f)
 	var age: int = f.age - 1 if old else f.age
 	var t: float = clampf(float(age - move.startup) / maxf(1.0, move.active - 1.0), 0.0, 1.0)
 	var offset: Vector2 = move.start.lerp(move.end, t)
@@ -131,6 +171,7 @@ func step(inputs: Array) -> void:
 	# Collect both results BEFORE mutating either fighter. Equal ticks trade.
 	var killed: Array = [false, false]
 	var contacts: Array = []
+	var parries: Array = []
 	for i in range(2):
 		var attacker: Dictionary = fighters[i]
 		var defender: Dictionary = fighters[1 - i]
@@ -139,10 +180,31 @@ func step(inputs: Array) -> void:
 		if active(attacker) and (swept_hit(attacker, defender) or (invulnerable(defender) and swept_hit(attacker, defender, true))):
 			if invulnerable(defender):
 				events.append({"kind": "perfect_dodge" if defender.age < config.perfect_end else "dodge", "player": 1 - i})
+			elif can_parry(defender, attacker):
+				var hit: Rect2 = blade(attacker)
+				var hurt: Rect2 = body(defender)
+				var point := Vector2(hurt.get_center().x + defender.parry_dir * hurt.size.x * 0.5,
+					clampf(hit.get_center().y, hurt.position.y, hurt.end.y))
+				parries.append({"kind": "parry", "player": 1 - i, "attacker": i,
+					"attack_age": attacker.age, "point": point})
 			else:
 				killed[1 - i] = true
-				contacts.append({"attacker": i, "move": config.attacks[attacker.attack].id,
-					"attack_age": attacker.age, "hitbox": blade(attacker), "hurtbox": body(defender)})
+				contacts.append({"attacker": i, "move": attack_data(attacker).id,
+					"attack_age": attacker.age, "hitbox": blade(attacker), "hurtbox": body(defender),
+					"defence_expired": defender.state == "parry" and defender.age >= config.parry_window})
+	# Mutate only after both contacts have been evaluated; a deflected swing ends now.
+	for parry in parries:
+		var defender: Dictionary = fighters[parry.player]
+		var attacker: Dictionary = fighters[parry.attacker]
+		defender.state = "parry_success"
+		attacker.state = "parried"
+		for f in [defender, attacker]:
+			f.age = 0
+			f.buffer = ""
+			f.buffer_until = -1
+			f.parry_tick = tick
+			f.parry_point = parry.point
+		events.append(parry)
 	if killed[0] or killed[1]:
 		phase = "round_over"
 		phase_tick = 0
@@ -165,18 +227,30 @@ func step(inputs: Array) -> void:
 func advance_action_clock(f: Dictionary) -> void:
 	f.age += 1
 	if f.state == "attack":
-		var a: Resource = config.attacks[f.attack]
+		var a: Resource = attack_data(f)
 		if f.age >= a.startup + a.active + a.finish:
 			f.state = "idle"
 	elif f.state == "sprint" and f.age >= config.sprint_ticks:
 		f.state = "idle"
 	elif f.state == "dodge" and f.age >= config.dodge_ticks:
 		f.state = "idle"
+	elif f.state == "parry" and f.age >= config.parry_ticks:
+		f.state = "idle"
+	elif f.state == "parry_success" and f.age >= config.parry_success_ticks:
+		f.state = "idle"
+	elif f.state == "parried" and f.age >= config.parried_ticks:
+		f.state = "idle"
 
 func advance(f: Dictionary, input: Dictionary) -> void:
 	advance_action_clock(f)
 	var command: String = input.get("action", "")
-	if command != "":
+	# Precision defence is not buffered; it can plant a sprint, but never cancel an attack/dodge.
+	if command == "parry":
+		if f.state in ["idle", "sprint"] and not airborne(f):
+			f.buffer = ""
+			f.buffer_until = -1
+			start_action(f, command, 0)
+	elif command != "":
 		f.buffer = command
 		f.buffer_until = tick + config.buffer_ticks - 1
 	if tick > f.buffer_until:
@@ -188,11 +262,13 @@ func advance(f: Dictionary, input: Dictionary) -> void:
 		if start_action(f, f.buffer, axis):
 			f.buffer = ""
 	if f.state == "sprint":
-		f.pos.x += f.dash_dir * config.sprint_distance / config.sprint_ticks
+		f.pos.x += f.dash_dir * sprint_distance(f) / config.sprint_ticks
 	elif airborne(f):
 		f.pos.x += f.vx
+	elif f.state == "attack":
+		f.pos.x += attack_step(f)
 	elif f.state == "idle":
-		f.pos.x += axis * config.walk_speed
+		f.pos.x += axis * walk_speed(f)
 	advance_gravity(f)
 	f.pos.x = clampf(f.pos.x, config.arena_left, config.arena_right)
 
@@ -221,7 +297,7 @@ func start_action(f: Dictionary, command: String, axis: int) -> bool:
 		return false
 	if command == "jump":
 		f.vy = config.jump_speed
-		f.vx = axis * config.walk_speed
+		f.vx = axis * walk_speed(f)
 		f.air_attacked = false
 		return true
 	if command == "sprint":
@@ -232,6 +308,11 @@ func start_action(f: Dictionary, command: String, axis: int) -> bool:
 	if command == "dodge":
 		f.state = "dodge"
 		f.age = 0
+		return true
+	if command == "parry":
+		f.state = "parry"
+		f.age = 0
+		f.parry_dir = f.facing
 		return true
 	return false
 
@@ -253,7 +334,7 @@ func swept_hit(a: Dictionary, d: Dictionary, standing: bool = false) -> bool:
 	# On the first active tick only the final pose is live (startup cannot kill).
 	var current: Rect2 = blade(a)
 	var hurt: Rect2 = body(d, false, standing)
-	var move: Resource = config.attacks[a.attack]
+	var move: Resource = attack_data(a)
 	if a.age == move.startup:
 		return current.intersects(hurt)
 	var previous: Rect2 = blade(a, true)

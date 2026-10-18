@@ -1,0 +1,164 @@
+{
+  "files": {
+    "tsukiyo/parry-0.wav": {
+      "sources": [
+        "starninjas-sword/sword.1.ogg",
+        "kenney-rpg/metalClick.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.4,
+      "sha256": "165b49cd3506ebc2b848b7cb866bc68aa400f9b1d0850d76fa2e363de3e0d777"
+    },
+    "tsukiyo/parry-1.wav": {
+      "sources": [
+        "starninjas-sword/sword.2.ogg",
+        "kenney-rpg/metalClick.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.4,
+      "sha256": "779cb55726bdee6ba4a3c7dd813d0598f451393947dc96bdbea0aeb064db4eff"
+    },
+    "tsukiyo/parry-2.wav": {
+      "sources": [
+        "starninjas-sword/sword.3.ogg",
+        "kenney-rpg/metalClick.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.4,
+      "sha256": "e99344d77f0cb0441bacfb7c6d22198ed58c05600706eb7a6b7ad4558e449e16"
+    },
+    "ren/parry-0.wav": {
+      "sources": [
+        "starninjas-sword/sword.6.ogg",
+        "kenney-rpg/metalClick.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.49,
+      "sha256": "4f36dfa7b6924c260228b84b45ad15a82a2d127d6a6a4e8d29a81fecb1066771"
+    },
+    "ren/parry-1.wav": {
+      "sources": [
+        "starninjas-sword/sword.7.ogg",
+        "kenney-rpg/metalClick.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.49,
+      "sha256": "36fc41445c7f334f25a02bfd1dbf5424e941cd621db89f0d24fa9cb3495bdaed"
+    },
+    "ren/parry-2.wav": {
+      "sources": [
+        "starninjas-sword/sword.8.ogg",
+        "kenney-rpg/metalClick.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.49,
+      "sha256": "da050754345e9e15a1fc31b68638e5693780d9d9f8bab1b8a91e097d610b8f40"
+    },
+    "daichi/parry-0.wav": {
+      "sources": [
+        "starninjas-sword/sword.6.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-impact/impactWood_light_000.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.44,
+      "sha256": "86aa09af331fa4b6987b0e36c87be267bd5fdc4e5b7f68da99e81652ec80c8ee"
+    },
+    "daichi/parry-1.wav": {
+      "sources": [
+        "starninjas-sword/sword.7.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-impact/impactWood_light_001.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.44,
+      "sha256": "756f52a123486a945073936382d0b0ae0a84c893624304d026cd86846cad2ab9"
+    },
+    "daichi/parry-2.wav": {
+      "sources": [
+        "starninjas-sword/sword.8.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-impact/impactWood_light_002.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.44,
+      "sha256": "5b47db19f2e67f53b2ad1dddbe73198bbcddc67a743e0c672d1e0c04da10f126"
+    },
+    "nao/parry-0.wav": {
+      "sources": [
+        "starninjas-sword/sword.1.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-rpg/knifeSlice2.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.25,
+      "sha256": "8922a018629e4429ed993995fbd71de53376d59f66e87050d766dc524e51fe2c"
+    },
+    "nao/parry-1.wav": {
+      "sources": [
+        "starninjas-sword/sword.2.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-rpg/knifeSlice2.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.25,
+      "sha256": "9a0563970fd2c8835296c90f9913bd67a502e43937783787a5df63dee234804e"
+    },
+    "nao/parry-2.wav": {
+      "sources": [
+        "starninjas-sword/sword.3.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-rpg/knifeSlice2.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.25,
+      "sha256": "fa1ad91609478ac4a3bc620613a9eb2118ca1eeae2c47f2065675aecdfc73e67"
+    },
+    "sayo/parry-0.wav": {
+      "sources": [
+        "starninjas-sword/sword.1.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-rpg/bookFlip1.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.3,
+      "sha256": "bd5da5f384502a25a6aaf8dc71708bc7ec9b8a254bcd451b8f773ff6e53f4bfe"
+    },
+    "sayo/parry-1.wav": {
+      "sources": [
+        "starninjas-sword/sword.2.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-rpg/bookFlip2.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.3,
+      "sha256": "7b4c4e9fca124d4ea061d9f2da473c243a836b518e4f9235b9f9ccf32e59ccb6"
+    },
+    "sayo/parry-2.wav": {
+      "sources": [
+        "starninjas-sword/sword.3.ogg",
+        "kenney-rpg/metalClick.ogg",
+        "kenney-rpg/bookFlip3.ogg"
+      ],
+      "peak_dbfs": -9,
+      "seconds": 0.3,
+      "sha256": "b3b4e0dfb2a2c6454e2621e3f4a9562d14f72a2ac94905048d4e9c33e52f8ae6"
+    }
+  },
+  "source_sha256": {
+    "starninjas-sword/sword.1.ogg": "4a3e80705619cbd7500682ab51004011ddf67e14ccf1818ceb9e5b539fe42b75",
+    "kenney-rpg/metalClick.ogg": "9851a69d0c613e13bceef08060ecc4148f098ef487927cbebe270d642398a3b3",
+    "starninjas-sword/sword.2.ogg": "e74221f6cec0acaa7c19095618c683c3cdc1741f02193b61cb28a2ec56cbfce2",
+    "starninjas-sword/sword.3.ogg": "ce09eb2987531d1323415065d7811a9cf0ea8639766d9fa77655d602e7e14989",
+    "starninjas-sword/sword.6.ogg": "5b6eaaac9c552ce364cfdea3c12cef846c89796fc9bb880181615f43ee4e4779",
+    "starninjas-sword/sword.7.ogg": "66f2a2e63182fa14470a63fc4a862ff77fa861f69a6a41d8e9874c9853c2d9dd",
+    "starninjas-sword/sword.8.ogg": "97f55774d7f0602c5f87e4ef289fcdf7ff07eea987ddc52849909d74374458a6",
+    "kenney-impact/impactWood_light_000.ogg": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3",
+    "kenney-impact/impactWood_light_001.ogg": "4b76bf3ccc8e60d19188f3165b778a7817786faa6887c55d9049bcbeef3b425f",
+    "kenney-impact/impactWood_light_002.ogg": "b183cf7a5bd783817e0e4b82af34ac6658fa1927049089dadc8b15c2ecc771dc",
+    "kenney-rpg/knifeSlice2.ogg": "6c2064d0ef988d1ec3d56868e823ea8823a5cac00f2742560052633529407def",
+    "kenney-rpg/bookFlip1.ogg": "fa81ac2fedc8c641661b87e349630a36c9800e795e0c800e029214efdbe26a7d",
+    "kenney-rpg/bookFlip2.ogg": "3409042acbfaebc24c1a6327dc073e36f9250841712e96c5040da566a97df73c",
+    "kenney-rpg/bookFlip3.ogg": "c85db5dceb3f1df073e960630277eaa88a5afda0477c1ddd68dad707621767be"
+  }
+}

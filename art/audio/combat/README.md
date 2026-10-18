@@ -1,6 +1,8 @@
 # MAAI · Sonidos de combate, primera integración
 
-17 de octubre de 2026. 90 efectos mono, PCM16/48 kHz, editados a partir de grabaciones CC0. Son seis familias con tres variantes por personaje: pasos, aterrizaje, arma en movimiento, impacto, esquiva y caída del cuerpo. Los originales utilizados están en `sources/`; las fuentes por archivo, hashes, niveles y duraciones están en `manifest.json`.
+17 de octubre de 2026. 105 efectos mono, PCM16/48 kHz, editados a partir de grabaciones CC0. Siete familias con tres variantes por personaje: pasos, aterrizaje, arma en movimiento, impacto, esquiva, caída del cuerpo y parry. Los originales utilizados están en `sources/`; las fuentes por archivo, hashes, niveles y duraciones están en `manifest.json` y `parry-manifest.json`.
+
+El parry es un contacto metálico propio por personaje, preparado con `tools/build_parry_sfx.py`. Solo suena al confirmar un desvío; no al pulsar en vacío ni durante cada tick del golpe. No dispara el impacto corporal. Su volumen sigue el canal SFX y abre espacio brevemente en la música. Ver `COMBATE_DEFENSA.md` en la raíz para las reglas.
 
 ## Identidad por personaje
 

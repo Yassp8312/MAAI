@@ -6,3 +6,12 @@
 script = ExtResource("1")
 reaches = PackedFloat32Array(260, 170, 235, 210, 170, 175)
 dodge_height = 145.0
+startup_ticks = PackedInt32Array(12, 10, 17, 10, 13, 16)
+active_ticks = PackedInt32Array(4, 5, 6, 4, 6, 5)
+recovery_ticks = PackedInt32Array(21, 18, 25, 17, 20, 23)
+advances = PackedFloat32Array(38, 0, 20, 0, 0, 0)
+walk_scale = 0.96
+sprint_scale = 0.96
+move_names = PackedStringArray("Estocada de avance", "Corte de respuesta", "Barrido de presión", "Punta suspendida", "Arco pesado", "Descenso del ronin")
+move_roles = PackedStringArray("Gana terreno al atacar; fallar deja una abertura.", "Tu respuesta más rápida cerca y contra saltos.", "Avanza y cubre abajo; es lento y comprometido.", "Alcance aéreo frontal; recoge más lento que Tsukiyo.", "Barrido aéreo amplio; no sirve para responder deprisa.", "Castiga debajo de ti; prepara y aterriza con cuidado.")
+style_note = "Presión frontal con pasos de ataque. Gana terreno, pero no puede retirar el filo deprisa."

@@ -100,8 +100,10 @@ func test_sprint_attacks() -> void:
 					check(f.state == "attack" and f.age == 0 and f.attack == move, "%s J%d move %d interrupts sprint at tick %d" % [id, player + 1, move, age])
 					check(f.pos == stopped_at and f.buffer.is_empty(), "Attack plants feet immediately and consumes its command")
 					check(f.attack_dir == f.facing, "Retreating attack remains opponent-facing")
-					run_ticks(sim, sim.config.attacks[move].startup - 1)
-					check(not sim.active(f) and f.pos == stopped_at, "Sprint does not bypass attack startup or extend its reach by sliding")
+					var technique: Resource = sim.attack_data(f)
+					run_ticks(sim, technique.startup - 1)
+					var expected_x: float = stopped_at.x + technique.advance * sim.attack_progress(technique, technique.startup - 1) * f.attack_dir
+					check(not sim.active(f) and is_equal_approx(f.pos.x, expected_x), "Sprint stops; only the technique's authored step can move during startup")
 					sim.step([{}, {}])
 					check(sim.active(f), "Attack becomes active at its usual timing")
 	# Closing distance can now be stopped early to strike before the dash ends.

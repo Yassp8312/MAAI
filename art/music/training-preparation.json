@@ -1,0 +1,41 @@
+{
+  "title": "Ink Duel · Dojo",
+  "source": "Banda1.mp3",
+  "source_sha256": "b92bcd6e101bb5ab17f87e73ed2d6bc7671951e38e7f75a9f51138972f67ba6d",
+  "source_segment_seconds": [
+    12,
+    96
+  ],
+  "tempo_factor": 0.94,
+  "pitch_changed": false,
+  "stem_separation": false,
+  "filters": "atrim=start=12:end=96,asetpts=PTS-STARTPTS,atempo=0.94,highpass=f=55,bass=g=-2.5:f=130:w=0.7,equalizer=f=2400:t=o:w=1.4:g=-2,treble=g=-2:f=5000,aecho=0.9:0.95:59|113:0.045|0.025",
+  "fixed_gain_db": -4.86,
+  "output": "training.ogg",
+  "output_sha256": "0db70a4364067bf454cccb8a81b9fcb5ec71a8eb263885ff797b15c11bb4a075",
+  "source_after_processing_measurement": {
+    "input_i": "-17.14",
+    "input_tp": "-3.46",
+    "input_lra": "4.70",
+    "input_thresh": "-27.14",
+    "output_i": "-20.95",
+    "output_tp": "-7.33",
+    "output_lra": "2.70",
+    "output_thresh": "-30.95",
+    "normalization_type": "dynamic",
+    "target_offset": "-1.05"
+  },
+  "final_encoded_measurement": {
+    "input_i": "-22.06",
+    "input_tp": "-8.70",
+    "input_lra": "4.70",
+    "input_thresh": "-32.06",
+    "output_i": "-20.96",
+    "output_tp": "-7.41",
+    "output_lra": "2.70",
+    "output_thresh": "-30.96",
+    "normalization_type": "dynamic",
+    "target_offset": "-1.04"
+  },
+  "note": "Only loudnorm input_* fields describe measured audio. Its normalized output is discarded."
+}

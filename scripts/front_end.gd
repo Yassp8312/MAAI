@@ -5,16 +5,18 @@ const Sound = preload("res://scripts/ui_sound.gd")
 const InkButton = preload("res://scripts/ink_button.gd")
 const Prologue = preload("res://scripts/prologue.gd")
 var prologue: Control
+var studio: Control
+var credits: Control
 const PAPER = Color("e8e3d8")
 const INK = Color("202321")
 const MUTED = Color("62665f")
 const RED = Color("983e35")
 const NOTES = {
-	"tsukiyo": ["La calma antes del corte.", "Espada larga · distancia intermedia"],
-	"ren": ["Un paso firme. Ningún gesto de más.", "Espada larga · presión frontal"],
-	"daichi": ["Mantén al rival al otro lado del filo.", "Lanza yari · mayor alcance"],
-	"nao": ["Acércate. Encuentra la abertura.", "Dos tantō · combate cercano"],
-	"sayo": ["Cada gesto tiene una intención.", "Abanicos de guerra · alcance corto"]
+	"tsukiyo": ["Mide el alcance. Castiga y vuelve a guardia.", "Tachi · precisión y recuperación ágil"],
+	"ren": ["Gana terreno con el filo. Cada avance te compromete.", "Tachi · ataques con avance"],
+	"daichi": ["Intercepta desde lejos. Fallar la punta te expone.", "Yari · alcance y compromiso"],
+	"nao": ["Provoca un fallo. Entra y castiga de cerca.", "Dos tantō · entrada y velocidad"],
+	"sayo": ["Corta, cede espacio y cambia el ritmo.", "Tessen · arcos y retirada"]
 }
 var game
 var screen: String = "title"
@@ -36,6 +38,7 @@ var versus_names: Array = []
 var home_buttons: Array = []
 var result_buttons: Array = []
 var format_button: Button
+var arena_picker: OptionButton
 var mode_label: Label
 var notice: Label
 var result_title: Label
@@ -72,6 +75,7 @@ const HOME_NOTES = [
 	["La disciplina", "Explora cada arma y encuentra tu distancia."],
 	["El gesto", "Observa el movimiento antes de llevarlo al duelo."],
 	["A tu medida", "Ajusta imagen, sonido y controles."],
+	["Detrás del encuentro", "El equipo, los recursos y las manos que dieron forma a MAAI."],
 	["Hasta el próximo encuentro", "La distancia también se aprende en el silencio."]
 ]
 
@@ -101,6 +105,14 @@ func setup(owner_game: Node) -> void:
 	intro_page.add_child(prologue)
 	prologue.setup(serif)
 	prologue.finished.connect(func(): show_screen("title"))
+	studio = preload("res://scripts/studio_intro.gd").new()
+	page("studio").add_child(studio)
+	studio.setup()
+	studio.finished.connect(play_prologue)
+	credits = preload("res://scripts/credits.gd").new()
+	page("credits").add_child(credits)
+	credits.setup()
+	credits.closed.connect(show_home)
 	sync_devices()
 	Input.joy_connection_changed.connect(connection_changed)
 	show_screen("title")
@@ -233,10 +245,10 @@ func build_home() -> void:
 	text(p, "EL ARTE DE LA DISTANCIA", Rect2(108, 80, 650, 30), 17, MUTED)
 	text(p, "M A A I", Rect2(100, 125, 720, 120), 92, INK, true)
 	text(p, "Antes del golpe, la distancia.", Rect2(108, 255, 650, 44), 28, MUTED, true)
-	var captions = ["Duelo local", "Práctica libre", "Galería de movimientos", "Opciones", "Salir"]
-	var actions = [func(): open_selection("duel"), func(): open_selection("practice"), func(): open_selection("gallery"), func(): game.open_options(), func(): get_tree().quit()]
+	var captions = ["Duelo local", "Entrenamiento", "Galería de movimientos", "Opciones", "Créditos", "Salir"]
+	var actions = [func(): open_selection("duel"), func(): open_selection("practice"), func(): open_selection("gallery"), func(): game.open_options(), show_credits, func(): get_tree().quit()]
 	for i in range(captions.size()):
-		var b := button(p, captions[i], Rect2(108, 345 + i * 73, 565, 64), actions[i])
+		var b := button(p, captions[i], Rect2(108, 332 + i * 63, 565, 57), actions[i])
 		b.ordinal = "%02d" % (i + 1)
 		b.focus_entered.connect(func(): describe_home(i))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -255,13 +267,27 @@ func build_home() -> void:
 	button(p, "Volver a ver el prólogo", Rect2(790, 852, 340, 38), play_prologue, true)
 
 func play_prologue() -> void:
+	game.menu_music.silence()
+	game.battle_music.silence()
 	game.playing = false
 	show_screen("intro")
 	prologue.start()
 	game.refresh()
 
+func play_boot() -> void:
+	game.playing = false
+	show_screen("studio")
+	studio.start()
+	game.refresh()
+
+func show_credits() -> void:
+	credits.show_page(0)
+	show_screen("credits")
+	credits.buttons[0].grab_focus()
+	game.refresh()
+
 func describe_home(index: int) -> void:
-	focus_target_y = 345 + index * 73
+	focus_target_y = 332 + index * 63
 	if home_description != null:
 		home_section.text = HOME_NOTES[index][0].to_upper()
 		home_description.text = HOME_NOTES[index][1]
@@ -292,6 +318,14 @@ func build_selection() -> void:
 		hints.append(text(p, "", Rect2(x + 24, 751, 690, 28), 18, MUTED))
 	mode_label = text(p, "", Rect2(1040, 125, 496, 35), 20, RED)
 	mode_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	arena_picker = OptionButton.new()
+	arena_picker.theme = preload("res://scripts/interface_style.gd").control_theme()
+	arena_picker.position = Vector2(1100, 177)
+	arena_picker.size = Vector2(432, 42)
+	arena_picker.add_theme_font_size_override("font_size", 18)
+	for arena_name in game.arena.NAMES: arena_picker.add_item(arena_name)
+	arena_picker.item_selected.connect(game.select_arena)
+	p.add_child(arena_picker)
 	format_button = button(p, "Mejor de 3", Rect2(1210, 824, 326, 46), toggle_format, true)
 	format_button.focus_mode = Control.FOCUS_NONE
 	button(p, "← Volver al menú", Rect2(64, 824, 285, 46), show_home, true).focus_mode = Control.FOCUS_NONE
@@ -384,7 +418,7 @@ func open_selection(next_mode: String = "duel") -> void:
 			if roster[index].id == game.selected_characters[player]:
 				indices[player] = index
 		update_player(player)
-	mode_label.text = {"duel": "DUELO LOCAL", "practice": "PRÁCTICA LIBRE", "gallery": "GALERÍA DE MOVIMIENTOS"}[mode]
+	mode_label.text = {"duel": "DUELO LOCAL", "practice": "ENTRENAMIENTO", "gallery": "GALERÍA DE MOVIMIENTOS"}[mode]
 	format_button.visible = mode == "duel"
 	format_button.text = "Mejor de %d · Tab / Y" % game.best_of
 	sound.cue("confirm")
@@ -462,8 +496,7 @@ func launch() -> void:
 	if mode == "gallery":
 		game.start_demo()
 	else:
-		game.start_game()
-		game.practice = mode == "practice"
+		game.start_game(mode)
 
 func show_result() -> void:
 	var winner: int = 0 if game.sim.scores[0] > game.sim.scores[1] else 1
@@ -518,6 +551,9 @@ func _input(event: InputEvent) -> void:
 	if screen == "intro":
 		prologue.handle_input(event)
 		return
+	if screen == "studio":
+		studio.handle_input(event)
+		return
 	if screen == "title":
 		if title_age > 0.25 and event.is_pressed() and (event is InputEventKey or event is InputEventJoypadButton):
 			show_home()
@@ -541,7 +577,7 @@ func _input(event: InputEvent) -> void:
 		back = event.button_index == JOY_BUTTON_B
 	elif event is InputEventJoypadMotion and event.axis == JOY_AXIS_LEFT_Y:
 		direction = stick_step(event)
-	var choices: Array = home_buttons if screen == "home" else result_buttons
+	var choices: Array = credits.buttons if screen == "credits" else (home_buttons if screen == "home" else result_buttons)
 	if direction != 0:
 		var index: int = choices.find(get_viewport().gui_get_focus_owner())
 		choices[posmod(index + direction, choices.size())].grab_focus()

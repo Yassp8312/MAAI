@@ -212,7 +212,7 @@ func build_controls() -> void:
 	box.add_child(grid)
 	for title in ["Acción", "Teclado", "Mando"]:
 		text_label(title, grid, 18)
-	for i in range(8):
+	for i in range(Settings.ACTION_NAMES.size()):
 		text_label(Settings.ACTION_NAMES[i], grid, 19).custom_minimum_size.x = 250
 		var key_button := button("", grid)
 		key_button.custom_minimum_size = Vector2(250, 32)
@@ -286,9 +286,9 @@ func refresh_fields() -> void:
 
 func refresh_bindings() -> void:
 	var player: int = player_select.selected
-	for i in range(8):
+	for i in range(Settings.ACTION_NAMES.size()):
 		key_buttons[i].text = Settings.key_name(draft.keys[player][i])
-	for i in range(6):
+	for i in range(Settings.DEFAULT_PAD.size()):
 		pad_buttons[i].text = Settings.pad_name(draft.pads[player][i])
 
 func begin_capture(index: int, keyboard: bool) -> void:

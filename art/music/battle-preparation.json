@@ -1,0 +1,40 @@
+[
+  {
+    "source": "Banda sonora2.mp3",
+    "sha256": "610ab145f415b537149867bb363f0aa47330712a31e7e9b224bb8c11ecc4b43c",
+    "output": "battle-2.ogg",
+    "filter": "highpass=f=35,equalizer=f=2500:t=o:w=1.5:g=-2",
+    "fixed_gain_db": -7.67,
+    "filtered_source_measurement": {
+      "input_i": "-13.33",
+      "input_tp": "0.32",
+      "input_lra": "6.70",
+      "input_thresh": "-23.54",
+      "output_i": "-19.29",
+      "output_tp": "-4.94",
+      "output_lra": "3.50",
+      "output_thresh": "-29.36",
+      "normalization_type": "dynamic",
+      "target_offset": "-1.71"
+    }
+  },
+  {
+    "source": "Banda sonora 3.mp3",
+    "sha256": "b68940672db02dec0e0b33ef157cf1299f5729078c654a0521f82e6a0a667880",
+    "output": "battle-3.ogg",
+    "filter": "highpass=f=35,equalizer=f=2500:t=o:w=1.5:g=-2",
+    "fixed_gain_db": -7.93,
+    "filtered_source_measurement": {
+      "input_i": "-13.07",
+      "input_tp": "-0.12",
+      "input_lra": "9.10",
+      "input_thresh": "-23.28",
+      "output_i": "-18.81",
+      "output_tp": "-3.29",
+      "output_lra": "3.30",
+      "output_thresh": "-28.86",
+      "normalization_type": "dynamic",
+      "target_offset": "-2.19"
+    }
+  }
+]

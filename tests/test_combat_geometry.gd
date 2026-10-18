@@ -33,7 +33,7 @@ func test_reach() -> void:
 			a.attack_dir = a.facing
 			for move in range(6):
 				a.attack = move
-				var data: Resource = sim.config.attacks[move]
+				var data: Resource = sim.attack_data(a, move)
 				var maximum: float = 0
 				for age in range(data.startup, data.startup + data.active):
 					a.age = age
@@ -51,7 +51,7 @@ func test_reach() -> void:
 				sim.step(input)
 				for tick in range(30):
 					sim.step([{}, {}])
-				var expected: bool = gap == 130 or (gap == 215 and id in ["tsukiyo", "ren", "daichi"]) or (gap == 315 and id == "daichi")
+				var expected: bool = gap == 130 or (gap == 215 and id in ["tsukiyo", "ren", "daichi", "nao"]) or (gap == 315 and id in ["daichi", "ren"])
 				check((sim.scores[player] == 1) == expected, "%s at distance %.0f has the expected real hit/miss" % [id, gap])
 			sim.reset_round()
 			check(sim.fighters[player].character_id == id, "New round retains selected weapon")
@@ -178,7 +178,10 @@ func test_air_death() -> void:
 		f.vy = -2
 	sim.step([{}, {}])
 	check(sim.last_resolution.get("double_ko", false) and sim.scores == [0, 0], "Airborne simultaneous hits still produce a scoreless double KO")
-	for tick in range(80):
+	var landed: Array = [false, false]
+	while sim.phase == "round_over":
+		for i in range(2):
+			landed[i] = landed[i] or (sim.fighters[i].state == "dead" and sim.fighters[i].pos.y == sim.config.floor_y)
 		sim.step([{}, {}])
-	for f in sim.fighters:
-		check(f.state == "dead" and f.pos.y == sim.config.floor_y, "Both double-KO victims land")
+	for did_land in landed:
+		check(did_land, "Both double-KO victims land before the next round")

@@ -1,6 +1,7 @@
 .godot/
 tmp/
 *.log
+/build/
 
 # Local credentials and Python caches.
 .env
@@ -12,6 +13,8 @@ __pycache__/
 # Offline experiments and generated comparison media; runtime art stays tracked.
 /art/experiments/
 /art/reviews/**/*.mp4
+/art/reviews/**/*.mp3
+/art/reviews/**/*.mp3.import
 /art/reviews/**/*.ogg
 /art/reviews/**/*.ogg.import
 /art/characters/**/*-preview.mp4

@@ -2,10 +2,10 @@ extends RefCounted
 ## Preferences are independent of combat and character assets.
 const FILE_PATH = "user://settings.cfg"
 const RESOLUTIONS = [Vector2i(960, 540), Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(3840, 2160)]
-const DEFAULT_KEYS = [[KEY_A, KEY_D, KEY_W, KEY_S, KEY_Q, KEY_F, KEY_G, KEY_H],
-	[KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_K, KEY_U, KEY_I, KEY_O]]
-const DEFAULT_PAD = [JOY_BUTTON_A, JOY_BUTTON_RIGHT_SHOULDER, JOY_BUTTON_LEFT_SHOULDER, JOY_BUTTON_X, JOY_BUTTON_Y, JOY_BUTTON_B]
-const ACTION_NAMES = ["Mover a la izquierda", "Mover a la derecha", "Saltar", "Sprint", "Esquivar", "Ataque 1", "Ataque 2", "Ataque 3"]
+const DEFAULT_KEYS = [[KEY_A, KEY_D, KEY_W, KEY_S, KEY_Q, KEY_F, KEY_G, KEY_H, KEY_E],
+	[KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_K, KEY_U, KEY_I, KEY_O, KEY_J]]
+const DEFAULT_PAD = [JOY_BUTTON_A, JOY_BUTTON_RIGHT_SHOULDER, JOY_BUTTON_LEFT_SHOULDER, JOY_BUTTON_X, JOY_BUTTON_Y, JOY_BUTTON_B, JOY_BUTTON_RIGHT_STICK]
+const ACTION_NAMES = ["Mover a la izquierda", "Mover a la derecha", "Saltar", "Sprint", "Esquivar", "Ataque 1", "Ataque 2", "Ataque 3", "Bloqueo preciso / parry"]
 const AUDIO_BUSES = ["Master", "Music", "SFX", "Ambience", "IntroVO"]
 const RESERVED_KEYS = [KEY_ESCAPE, KEY_SPACE, KEY_F1, KEY_F2, KEY_R, KEY_TAB, KEY_ENTER, KEY_KP_ENTER, KEY_ALT, KEY_CTRL, KEY_SHIFT, KEY_META, KEY_CAPSLOCK, KEY_UNKNOWN]
 var values: Dictionary = defaults()
@@ -31,11 +31,11 @@ static func binding_conflict(bindings: Array, player: int, index: int, code: int
 				return "Ya se usa en J%d · %s." % [p + 1, ACTION_NAMES[i if keyboard else i + 2]]
 	return ""
 
-static func valid_bindings(bindings: Variant, keyboard: bool) -> bool:
+static func valid_bindings(bindings: Variant, keyboard: bool, legacy: bool = false) -> bool:
 	if not bindings is Array or bindings.size() != 2:
 		return false
 	for p in range(2):
-		if not bindings[p] is Array or bindings[p].size() != (8 if keyboard else 6):
+		if not bindings[p] is Array or bindings[p].size() != (9 if keyboard else 7) - int(legacy):
 			return false
 	for p in range(2):
 		for i in range(bindings[p].size()):
@@ -45,6 +45,19 @@ static func valid_bindings(bindings: Variant, keyboard: bool) -> bool:
 			if not binding_conflict(bindings, p, i, code, keyboard).is_empty():
 				return false
 	return true
+
+static func migrate_bindings(bindings: Variant, keyboard: bool) -> Variant:
+	if not valid_bindings(bindings, keyboard, true):
+		return bindings
+	var migrated: Array = bindings.duplicate(true)
+	for p in range(2):
+		var candidates: Array = [DEFAULT_KEYS[p][-1]] if keyboard else [DEFAULT_PAD[-1]]
+		candidates.append_array(range(KEY_A, KEY_Z + 1) if keyboard else range(JOY_BUTTON_MAX))
+		for code in candidates:
+			if (valid_key(code) if keyboard else valid_pad(code)) and binding_conflict(migrated, p, migrated[p].size(), code, keyboard).is_empty():
+				migrated[p].append(code)
+				break
+	return migrated
 
 func load_settings(path: String = "") -> void:
 	values = defaults()
@@ -63,6 +76,7 @@ func load_settings(path: String = "") -> void:
 			values[section][key] = value
 	for group in ["keys", "pads"]:
 		var bindings: Variant = config.get_value("controls", group, values[group])
+		bindings = migrate_bindings(bindings, group == "keys")
 		if valid_bindings(bindings, group == "keys"):
 			values[group] = bindings.duplicate(true)
 
@@ -82,7 +96,7 @@ func apply_all() -> void:
 
 func apply_bindings() -> void:
 	for player in range(2):
-		for index in range(8):
+		for index in range(ACTION_NAMES.size()):
 			var action: String = "p%d_%d" % [player, index]
 			if not InputMap.has_action(action):
 				InputMap.add_action(action)
@@ -118,6 +132,9 @@ static func apply_display(display: Dictionary) -> void:
 		target.y = mini(target.y, maxi(360, usable.size.y - 48))
 		DisplayServer.window_set_size(target)
 		DisplayServer.window_set_position(usable.position + (usable.size - target) / 2)
+	# Assign both native window icons after applying window mode and resolution.
+	# The ICO embedded in the executable is independent of the running window.
+	DisplayServer.set_icon(preload("res://art/branding/maai-icon.png").get_image())
 
 static func key_name(code: int) -> String:
 	var names := {KEY_LEFT: "←", KEY_RIGHT: "→", KEY_UP: "↑", KEY_DOWN: "↓"}
@@ -134,4 +151,4 @@ func control_hint(player: int) -> String:
 	var names: Array = []
 	for code in values.keys[player]:
 		names.append(key_name(code))
-	return "J%d   %s / %s mover    %s salto    %s sprint    %s esquiva    %s / %s / %s ataques" % ([player + 1] + names)
+	return "J%d   %s / %s mover    %s salto    %s sprint    %s esquiva    %s / %s / %s ataques    %s parry" % ([player + 1] + names)

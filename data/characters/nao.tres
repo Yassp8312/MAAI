@@ -6,3 +6,12 @@
 script = ExtResource("1")
 reaches = PackedFloat32Array(140, 115, 135, 140, 120, 100)
 dodge_height = 130.0
+startup_ticks = PackedInt32Array(10, 7, 6, 7, 8, 10)
+active_ticks = PackedInt32Array(3, 4, 3, 3, 4, 4)
+recovery_ticks = PackedInt32Array(18, 13, 12, 10, 12, 15)
+advances = PackedFloat32Array(84, 0, 0, 0, 0, 0)
+walk_scale = 1.24
+sprint_scale = 1.10
+move_names = PackedStringArray("Entrada de dagas", "Cruce ascendente", "Corte al apoyo", "Aguja cercana", "Cruce en el aire", "Picado corto")
+move_roles = PackedStringArray("Cierra distancia con un paso rápido. Entra tras provocar un fallo.", "Intercepta cerca y hacia arriba; alcance muy corto.", "Tu castigo más rápido a corta distancia; no te acerca.", "Respuesta aérea rápida; tienes que estar cerca.", "Cruza varias alturas cerca del rival.", "Cae sobre una abertura; menor alcance y más preparación.")
+style_note = "Movilidad y combate cercano. Provoca un fallo, entra con las dagas y castiga antes de que se repongan."

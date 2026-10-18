@@ -6,3 +6,12 @@
 script = ExtResource("1")
 reaches = PackedFloat32Array(160, 125, 140, 135, 125, 125)
 dodge_height = 165.0
+startup_ticks = PackedInt32Array(8, 10, 13, 8, 10, 12)
+active_ticks = PackedInt32Array(4, 7, 5, 4, 6, 5)
+recovery_ticks = PackedInt32Array(10, 17, 17, 12, 15, 18)
+advances = PackedFloat32Array(0, 0, -24, 0, 0, 0)
+walk_scale = 1.08
+sprint_scale = 1.02
+move_names = PackedStringArray("Punta del tessen", "Abanico ascendente", "Corte de retirada", "Punta aérea", "Abanico suspendido", "Descenso de seda")
+move_roles = PackedStringArray("Toque cercano y recuperación breve para medir al rival.", "Cubre arriba durante más tiempo; alcance corto.", "Corta abajo mientras cedes espacio; desde lejos no alcanza.", "Ataque aéreo breve a poca distancia.", "Mantén el arco más tiempo para interceptar.", "Cubre debajo al caer; requiere anticipación.")
+style_note = "Ritmo y retirada. Alterna el toque breve con arcos duraderos y un corte que cede espacio."

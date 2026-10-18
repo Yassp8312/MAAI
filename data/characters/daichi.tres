@@ -6,3 +6,11 @@
 script = ExtResource("1")
 reaches = PackedFloat32Array(300, 235, 275, 240, 240, 215)
 dodge_height = 170.0
+startup_ticks = PackedInt32Array(15, 12, 20, 13, 16, 18)
+active_ticks = PackedInt32Array(4, 5, 7, 4, 6, 5)
+recovery_ticks = PackedInt32Array(30, 24, 32, 24, 28, 30)
+walk_scale = 0.86
+sprint_scale = 0.88
+move_names = PackedStringArray("Punta de guardia", "Alzada del asta", "Barrido del umbral", "Punta elevada", "Arco de la yari", "Lanza descendente")
+move_roles = PackedStringArray("Tu mayor alcance. Si falla, recoger la lanza lleva tiempo.", "Intercepta una entrada o un salto; menos alcance que la punta.", "Controla abajo durante más tiempo; muy lento si fallas.", "Mantén distancia en el aire; recuperación larga.", "Cubre varias alturas con la yari; exige anticipación.", "Amenaza debajo desde lejos; no permite corregir un fallo rápido.")
+style_note = "Control de distancia. Intercepta entradas con la yari; fallar de cerca deja al rival responder."

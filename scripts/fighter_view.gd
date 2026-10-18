@@ -43,7 +43,14 @@ func _draw() -> void:
 		draw_set_transform(Vector2(0, -8 * death), -facing * death * PI * 0.48, Vector2(1, 1))
 	if character_animation != null:
 		var cel: Dictionary = character_animation.pose(simulation, player)
-		draw_set_transform(Vector2.ZERO, 0, Vector2(facing * cel.scale, cel.scale))
+		var tilt: float = 0.0
+		if fighter.state == "parry":
+			tilt = -facing * 0.035 * (1.0 - float(fighter.age) / simulation.config.parry_ticks)
+		elif fighter.state == "parry_success":
+			tilt = -facing * 0.055 * (1.0 - float(fighter.age) / simulation.config.parry_success_ticks)
+		elif fighter.state == "parried":
+			tilt = -facing * 0.035 * sin(PI * (fighter.age + 1.0) / (simulation.config.parried_ticks + 1.0))
+		draw_set_transform(Vector2.ZERO, tilt, Vector2(facing * cel.scale, cel.scale))
 		draw_mesh(cel.mesh, cel.texture)
 	elif sprite_frames != null:
 		draw_sprite_pose(facing)
@@ -72,6 +79,15 @@ func _draw() -> void:
 		if player == 1:
 			draw_line(Vector2(-17, -178), Vector2(17, -178), white, 2)
 	draw_set_transform(Vector2.ZERO)
+	# Only the defender draws the contact flash, once per resolved deflection.
+	if fighter.state == "parry_success":
+		var contact: Vector2 = fighter.parry_point - position
+		var fade: float = 1.0 - float(fighter.age) / simulation.config.parry_success_ticks
+		for ray in range(5):
+			var direction := Vector2.RIGHT.rotated(-2.6 + ray * 1.17)
+			draw_line(contact + direction * 5, contact + direction * (12 + 20 * fade), Color(0.96, 0.92, 0.80, fade), 2, true)
+	if debug_boxes and simulation.parry_ready(fighter):
+		draw_line(Vector2(facing * 40, -225), Vector2(facing * 40, -35), Color("eee4ce"), 3, true)
 	if fighter.state == "attack":
 		var blade: Rect2 = simulation.blade(fighter)
 		blade.position -= position
@@ -96,7 +112,7 @@ func draw_sprite_pose(facing: int) -> void:
 	if animation == "idle":
 		animation = "jump" if simulation.airborne(fighter) else ("walk" if absf(fighter.pos.x - fighter.previous.x) > 0.1 else "idle")
 	if fighter.state == "attack":
-		animation = simulation.config.attacks[fighter.attack].id
+		animation = simulation.attack_data(fighter).id
 	if not sprite_frames.has_animation(animation):
 		animation = "idle"
 	if not sprite_frames.has_animation(animation):
@@ -114,7 +130,7 @@ func draw_sprite_pose(facing: int) -> void:
 		clock_ticks = 0 if simulation.airborne(fighter) else fighter.death_ground_age
 	var elapsed: float = clock_ticks / 60.0 * sprite_frames.get_animation_speed(animation)
 	if fighter.state == "attack":
-		var a: Resource = simulation.config.attacks[fighter.attack]
+		var a: Resource = simulation.attack_data(fighter)
 		elapsed = float(fighter.age) / (a.startup + a.active + a.finish) * duration
 	elif sprite_frames.get_animation_loop(animation):
 		elapsed = fmod(elapsed, duration)
