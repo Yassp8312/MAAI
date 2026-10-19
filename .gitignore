@@ -17,5 +17,7 @@ __pycache__/
 /art/reviews/**/*.mp3.import
 /art/reviews/**/*.ogg
 /art/reviews/**/*.ogg.import
+# Generated Godot metadata for local review captures.
+/art/reviews/**/*.import
 /art/characters/**/*-preview.mp4
 
